@@ -15,14 +15,14 @@ reinstantiated (Allowing for dynamic configuration).
 _Inspiration/Reference Using concepts from Cryengine 5: http://docs.cryengine.com/display/CEPROG/UI+Element_
 
 
-##XML Syntax
+## XML Syntax
 Currently, XML files must adhere to a standardized syntax to be properly read into the parser currently. 
 An refer to example_button.xml for a demonstration of this syntax.
 
 
-##Development Plan: 
+## Development Plan: 
 _Outline Will be copied into the project PDF_
-###Weeks 4-5: Research:
+### Weeks 4-5: Research:
 * Definition of elements: (Such as)
   * XML syntax expected by the Parser.
   * Desired UI elements: (Such as buttons, health bars, etc)
@@ -34,11 +34,11 @@ _Outline Will be copied into the project PDF_
   parser with so many useful ones available
   
 
-###Week 6: Development of Parser
+### Week 6: Development of Parser
 
-###Week 7: Development of Translator
+### Week 7: Development of Translator
 
-###Week 8: Development of Example Game
+### Week 8: Development of Example Game
 * Time permitting, a simple game will be developed to demonstrate the functionality of the UI system
    * Likely Will be a simple box collecting game.
 * Finishing off any incomplete elements
