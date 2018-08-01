@@ -11,7 +11,7 @@ extern crate find_folder;
 use piston_window::*;
 
 
-//EPRW this file simply runs
+//EPRW this file simply runs a hello world window using the piston engine.
 fn main() {
     let mut window: PistonWindow = WindowSettings::new(
         "piston: hello_world",
