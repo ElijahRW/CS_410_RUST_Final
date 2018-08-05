@@ -1,7 +1,8 @@
 [package]
-name = "src"
+name = "CS_410_Rust_Final_Project"
 version = "0.1.0"
 authors = ["Elijah Rich-Wimmer <elijah.rich-wimmer@act-on.net>"]
+include = ["src/**/*", "Cargo.toml"]
 
 [dependencies]
 piston_window = "0.80.0"
@@ -16,4 +17,7 @@ vecmath = "0.3.0"
 camera_controllers = "0.24.0"
 rand = "0.5.0"
 shader_version = "0.3.0"
-
+serde = "1.0.70"
+serde_derive = "1.0.70"
+serde-xml-rs = "0.2.1"
+serde_json = "1.0.24"

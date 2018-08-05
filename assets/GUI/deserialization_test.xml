@@ -1,0 +1,3 @@
+<Project name="my_project">
+    <Item name="hello" source="world.rs" />
+</Project>

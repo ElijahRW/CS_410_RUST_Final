@@ -5,11 +5,10 @@
 ***changed to reflect original content
 ***For original source, see:
 */
-extern crate piston_window;
 extern crate find_folder;
+extern crate piston_window;
 
 use piston_window::*;
-
 
 //EPRW this file simply runs a hello world window using the piston engine.
 fn main() {
@@ -23,7 +22,8 @@ fn main() {
         .unwrap();
 
     let assets = find_folder::Search::ParentsThenKids(3, 3)
-        .for_folder("assets").unwrap();
+        .for_folder("assets")
+        .unwrap();
     println!("{:?}", assets);
     let ref font = assets.join("FiraSans-Regular.ttf");
     let factory = window.factory.clone();
@@ -35,12 +35,9 @@ fn main() {
             let transform = c.transform.trans(10.0, 100.0);
 
             clear([0.0, 0.0, 0.0, 1.0], g);
-            text::Text::new_color([0.0, 1.0, 0.0, 1.0], 32).draw(
-                "Hello world!",
-                &mut glyphs,
-                &c.draw_state,
-                transform, g
-            ).unwrap();
+            text::Text::new_color([0.0, 1.0, 0.0, 1.0], 32)
+                .draw("Hello world!", &mut glyphs, &c.draw_state, transform, g)
+                .unwrap();
         });
     }
 }
