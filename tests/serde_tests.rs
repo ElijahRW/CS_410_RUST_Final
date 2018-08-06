@@ -6,6 +6,8 @@ extern crate serde_xml_rs;
 
 use serde_xml_rs::deserialize;
 
+//TODO: Copy test borrowed locations
+
 use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
@@ -24,7 +26,6 @@ struct Project {
     #[serde(rename = "Item", default)]
     pub items: Vec<Item>,
 }
-
 
 #[test]
 fn serde_derefferencing_correctly_test() {
