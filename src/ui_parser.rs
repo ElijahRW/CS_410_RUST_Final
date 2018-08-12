@@ -11,29 +11,30 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 use std::fmt;
+
+
 //Parser Module used to grab ui variables from XML and translates them into simple structures.
-/*
- * Button Struct
- *
-*/
-//#[derive(Debug)]
+
+
+
+/***Button Struct***/
 #[test]
 fn basic_button_deserialzation_test() {
-    let test_button = Button::read("assets/GUI/example_button.xml");
-    //println!("\n\n\n\n\n\n\n\n\n\n");
-    println!("{}", test_button);
+    let test_button = UiButton::read("assets/GUI/example_button.xml").unwrap();
+    println!("Simple Button Test:");
+    print!("{}", test_button);
 }
 
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Button {
+struct UiButton {
     name: String,
-    //#[serde(rename = "location", default)]
     location: ButtonLocation,
     texture: ButtonTexture,
     when_pushed: Option<ButtonTexture>,
 }
 
+//ToDo: Consider removing redundant structure: Use option syntax.
 #[derive(Serialize, Deserialize, Debug)]
 struct ButtonLocation {
     style: String,
@@ -44,12 +45,19 @@ struct ButtonLocation {
 #[derive(Serialize, Deserialize, Debug)]
 struct ButtonTexture {
     file: String,
-//    when_pushed: Option<ButtonTexture>,
 }
 
-//TODO: insert resource location
-impl Button {
-    fn read(path_str: &str) -> Self {
+//TODO: insert referenced resource URL
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Buttons {
+    buttons: Vec<UiButton>,
+}
+
+//TODO: Implement Result Data Type instead of Option.
+impl<'b, T: serde::Deserialize<'b>> Readable for T {
+    fn read(path_str: &str) -> Option<Self> {
+
         let path = Path::new(path_str);
         let display = path.display();
 
@@ -57,30 +65,31 @@ impl Button {
         let mut file = match File::open(&path) {
             // The `description` method of `io::Error` returns a string that
             // describes the error
-            Err(why) => panic!("couldn't open {}: {}", display, why.description()),
+            Err(why) => return None,
             Ok(file) => file,
         };
         // Read the file contents into a string, returns `io::Result<usize>`
         let mut s = String::new();
-        match file.read_to_string(&mut s) {
-            Err(why) => panic!("couldn't read {}: {}", display, why.description()),
-            Ok(_) => print!("{} contains:\n{}", display, s),
+        if file.read_to_string(&mut s).is_err() {
+            return None;
         }
-
-        deserialize(s.as_bytes()).unwrap()
-        // `file` goes out of scope, and the "hello.txt" file gets closed
+        Some(deserialize(s.as_bytes()).unwrap())
     }
 }
 
-impl fmt::Display for Button {
+
+
+trait Readable : Sized {
+     fn read(path_str: &str) -> Option<Self>;
+}
+
+impl fmt::Display for UiButton {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "(Button Name:{}\n\t, Location: {}, \n\tTexture: {}", self.name, self.location, self.texture)    }
+        write!(f, "(Button Name:{}\n\t, Location: {}, \n\tTexture: {}", self.name, self.location, self.texture)}
 }
 impl fmt::Display for ButtonLocation {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "(Style {}, x: {}   y: {})", self.style, self.x, self.y)
-
-    }
+        write!(f, "(Style {}, x: {}   y: {})", self.style, self.x, self.y)}
 }
 impl fmt::Display for ButtonTexture {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -88,6 +97,9 @@ impl fmt::Display for ButtonTexture {
 
     }
 }
+
+
+
 
 
 //TODO: Implement functionality for optional button texture in display
@@ -105,7 +117,7 @@ impl fmt::Display for ButtonTexture {
 //Window Config: Using Piston configuration as basis: http://docs.piston.rs/piston/window/index.html
 #[derive(Serialize, Deserialize, Debug)]
 struct Window {
-    position: WindowPosition,
+    position: Position,
     x: i32,
     y: i32,
 }
@@ -121,6 +133,13 @@ struct Position {
 struct Size {
     x: u32,
     y: u32,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct WindowColor {
+    r: u32,
+    g: u32,
+    b: u32,
 }
 
 
