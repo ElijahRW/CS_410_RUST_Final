@@ -7,9 +7,9 @@ extern crate piston_window;
 
 //extern crate ui_parser;
 
-use piston_window::draw_state::Blend;
+use piston_translator::piston_window::draw_state::Blend;
 
-use piston_window::*;
+use piston_translator::piston_window::*;
 
 
 struct RectangleData {

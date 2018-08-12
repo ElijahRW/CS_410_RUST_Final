@@ -1,3 +1,4 @@
+/*
 #[macro_use]
 extern crate serde_derive;
 
@@ -19,6 +20,7 @@ struct Item {
     pub source: String,
 }
 
+
 #[derive(Debug, Deserialize)]
 struct Project {
     pub name: String,
@@ -32,7 +34,6 @@ fn serde_derefferencing_correctly_test() {
     // Create a path to the desired file
     let path = Path::new("assets/GUI/deserialization_test.xml");
     let display = path.display();
-
     // Open the path in read-only mode, returns `io::Result<File>`
     let mut file = match File::open(&path) {
         // The `description` method of `io::Error` returns a string that
@@ -40,7 +41,6 @@ fn serde_derefferencing_correctly_test() {
         Err(why) => panic!("couldn't open {}: {}", display, why.description()),
         Ok(file) => file,
     };
-
     // Read the file contents into a string, returns `io::Result<usize>`
     let mut s = String::new();
     match file.read_to_string(&mut s) {
@@ -56,3 +56,5 @@ fn serde_derefferencing_correctly_test() {
     );
     // `file` goes out of scope, and the "hello.txt" file gets closed
 }
+
+*/
