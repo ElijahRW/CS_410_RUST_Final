@@ -5,14 +5,12 @@
 extern crate find_folder;
 extern crate piston_window;
 
-
 use ui_parser::*;
 //extern crate ui_parser;
 
-use piston_translator::piston_window::draw_state::Blend;
+//use piston_translator::piston_window::draw_state::Blend;
 
 use piston_translator::piston_window::*;
-
 
 pub struct ButtonData {
     pub dimensions: types::Rectangle,
@@ -22,35 +20,36 @@ pub struct ButtonData {
 }
 
 
-/*fn test () {
-    let x = ButtonData::new();
-}*/
+#[test]
+fn test_basic_translation () {
+    //Todo: add manual Button Creation
+    let button = UiButton::read("assets/GUI/example_button.xml");
+    let x = ButtonData::new(button.unwrap());
+}
 
 impl ButtonData {
-    /*pub fn new() -> Self {
-        ButtonData {
-            dimentions: rectangle::rectangle_by_corners(0.0,0.0,0.0,0.0),
-            position_x: 0,
-            position_y: 0,
-            //dimentions: Rectangle::new(button.color), //rectangle::rectangle_by_corners(0.0,0.0,0.0,0.0),
-            color: [0.0,0.0,0.0,0.0],
-            //rectangle::ne
-        }
-    }*/
     pub fn new(button: UiButton) -> Self {
         ButtonData {
-            dimensions: rectangle::rectangle_by_corners(0.0, 0.0, button.dimensions.width as f64, button.dimensions.height as f64),
+            dimensions: rectangle::rectangle_by_corners(
+                0.0,
+                0.0,
+                button.dimensions.width as f64,
+                button.dimensions.height as f64,
+            ),
             position_x: 50,
             position_y: 50,
-            color: [0.5,0.5,0.5,1.0],
+            color: [Self::scale_for_f64(button.color.r), Self::scale_for_f64(button.color.g), Self::scale_for_f64(button.color.b), Self::scale_for_f64(button.color.a)],
         }
+        //result.dimensions.set();
+    }
+    fn scale_for_f64(x: u64) -> f32 {
+        x as f32 / 100.0
     }
 
-
-    pub fn read_buttons_from_file(filePath: &str) -> Vec<ButtonData> {
-        let buttons = Buttons::read(filePath);
+    pub fn read_buttons_from_file(file_path: &str) -> Vec<ButtonData> {
+        let buttons = Buttons::read(file_path);
         let mut result = Vec::new();
-        let button_vector = buttons.unwrap();//TODO: add correct match case.
+        let button_vector = buttons.unwrap(); //TODO: add correct match case.
 
         for button in button_vector.buttons {
             result.push(Self::new(button));

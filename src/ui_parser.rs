@@ -1,19 +1,16 @@
 pub use serde::de::{
-    self, Deserialize, DeserializeSeed, EnumAccess, IntoDeserializer,
-    MapAccess, SeqAccess, VariantAccess, Visitor,
+    self, Deserialize, DeserializeSeed, EnumAccess, IntoDeserializer, MapAccess, SeqAccess,
+    VariantAccess, Visitor,
 };
 use serde_xml_rs::deserialize;
-
-
 
 pub use std::ops::{AddAssign, MulAssign, Neg};
 
 pub use std::error::Error;
+pub use std::fmt;
 pub use std::fs::File;
 pub use std::io::prelude::*;
 pub use std::path::Path;
-pub use std::fmt;
-
 
 //Parser Module used to grab ui variables from XML and translates them into simple structures.
 /**Button Struct**/
@@ -24,25 +21,24 @@ fn basic_button_deserialzation_test() {
     print!("{}", test_button);
 }
 
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UiButton {
     pub name: String,
     pub location: ButtonLocation,
     pub dimensions: ButtonDimensions,
     pub texture: ButtonTexture,
+    pub color: ButtonColor,
     pub when_pushed: Option<ButtonTexture>,
 }
-
 
 //ToDo: Consider removing redundant structure: Use option syntax?
 //TODO: Implement f64 support, conversion will currently be implemented
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ButtonDimensions {
+    //#[serde(deserialize_with = "coercible")]
     pub height: u64,
     pub width: u64,
 }
-
 
 //ToDo: Consider removing redundant structure: Use option syntax.
 #[derive(Serialize, Deserialize, Debug)]
@@ -53,6 +49,15 @@ pub struct ButtonLocation {
 }
 
 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct ButtonColor {
+    //#[serde(deserialize_with = "coercible")]
+    pub r: u64,
+    pub g: u64,
+    pub b: u64,
+    pub a: u64,
+}
+
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ButtonTexture {
@@ -60,7 +65,6 @@ pub struct ButtonTexture {
 }
 
 //TODO: insert referenced resource URL
-
 
 #[test]
 fn button_array_deserialzation_test() {
@@ -73,13 +77,14 @@ fn button_array_deserialzation_test() {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Buttons {
+    //TODO: implement sudynm for button so xml will have
+    //   logical naming convention of button instead of buttons
     pub buttons: Vec<UiButton>,
 }
 
 //TODO: Implement Result Data Type instead of Option.
 impl<'b, T: Deserialize<'b>> Readable for T {
     fn read(path_str: &str) -> Option<Self> {
-
         let path = Path::new(path_str);
         let display = path.display();
 
@@ -100,31 +105,28 @@ impl<'b, T: Deserialize<'b>> Readable for T {
     }
 }
 
-
-
-
-pub trait Readable : Sized {
-     fn read(path_str: &str) -> Option<Self>;
+pub trait Readable: Sized {
+    fn read(path_str: &str) -> Option<Self>;
 }
 impl fmt::Display for UiButton {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "(Button Name:{}\n\t, Location: {}, \n\tTexture: {}", self.name, self.location, self.texture
-        )}
+        write!(
+            f,
+            "(Button Name:{}\n\t, Location: {}, \n\tTexture: {}",
+            self.name, self.location, self.texture
+        )
+    }
 }
 impl fmt::Display for ButtonLocation {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "(Style {}, x: {}   y: {})", self.style, self.x, self.y)}
+        write!(f, "(Style {}, x: {}   y: {})", self.style, self.x, self.y)
+    }
 }
 impl fmt::Display for ButtonTexture {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "(File: {})", self.file)
-
     }
 }
-
-
-
-
 
 /*//TODO: Implement functionality for optional button texture in display
 impl fmt::Display for Option<ButtonTexture> {
@@ -136,7 +138,6 @@ impl fmt::Display for Option<ButtonTexture> {
             }
     }
 }*/
-
 
 //Window Config: Using Piston configuration as basis: http://docs.piston.rs/piston/window/index.html
 #[derive(Serialize, Deserialize, Debug)]
@@ -165,8 +166,6 @@ struct WindowColor {
     g: u32,
     b: u32,
 }
-
-
 
 //Value Bar Struct
 

@@ -8,9 +8,15 @@
                 <y>200</y>
             </location>
             <dimensions style="man">
-                <width>10</width>
+                <width>200</width>
                 <height>100</height>
             </dimensions>
+            <color><!--Scaled From 0-100 for conversion-->
+                <r>50</r>
+                <g>0</g>
+                <b>50</b>
+                <a>10</a>
+            </color>
             <texture file = "assets/test_button.png"/>
             <when_pushed file = "assets/test_button_pushed.png"/> <!--Consider rearranging this configuration, style could encourage unwated recursion-->
         </buttons>

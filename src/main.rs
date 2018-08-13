@@ -22,14 +22,10 @@ extern crate serde_derive;
 mod piston_translator;
 mod ui_parser;
 //use ui_parser::*;
-use ui_parser::*;
 use piston_translator::*;
+use ui_parser::*;
 
 //
-
-
-
-
 
 fn getSomeButtons(filePath: &str) -> Vec<ButtonData> {
     ButtonData::read_buttons_from_file(filePath)
@@ -37,7 +33,6 @@ fn getSomeButtons(filePath: &str) -> Vec<ButtonData> {
 
 //EPRW: this file simply runs a hello world window using the piston engine.
 fn main() {
-
     //TODO: TEMP BUTTON Parser
 
     //TODO: Implement parsed window settings
@@ -67,7 +62,7 @@ fn main() {
         let square = rectangle::square(0.0, 0.0, 50.0);
         //attempt to predefine the square:
         let recy = Rectangle::new(RED);
-        let recy2 = Rectangle::new([0.0,1.0,0.0,0.0]);
+        let recy2 = Rectangle::new([0.0, 1.0, 0.0, 0.0]);
 
         window.draw_2d(&e, |c, g| {
             clear([0.8, 0.8, 0.8, 1.0], g);
@@ -75,18 +70,15 @@ fn main() {
             let draw_state = c.draw_state.blend(Blend::Alpha);
 
             //TODO: EXPLANATION: Piston has a very odd method for rendering objects such as rectangles:
-                // the rectangle object itself defines the color and drawing methodes, while the input array defines the dimentions.
-            recy
-                .draw([25.0, 25.0, 100.0, 100.0], &draw_state, c.transform, g);
-            Rectangle::new(BLUE)
-                .draw([50.0, 50.0, 100.0, 100.0], &draw_state, c.transform, g);
+            // the rectangle object itself defines the color and drawing methodes, while the input array defines the dimentions.
+            recy.draw([25.0, 25.0, 100.0, 100.0], &draw_state, c.transform, g);
+            Rectangle::new(BLUE).draw([50.0, 50.0, 100.0, 100.0], &draw_state, c.transform, g);
 
-
-            for uiButton in &uiButtons {
-                recy.draw(uiButton.dimensions, &draw_state, c.transform, g);
+            for ui_button in &uiButtons {
+                current_transform = c.trans(ui_button.position_x,ui_button.position_x).transform;
+                //uiButton.dimensions.
+                recy.draw(ui_button.dimensions, &draw_state, c.transform, g);
             }
-
-
         });
         //Simple rectangle
 
