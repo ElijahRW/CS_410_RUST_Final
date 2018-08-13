@@ -62,7 +62,14 @@ pub struct ButtonTexture {
 //TODO: insert referenced resource URL
 
 
-
+#[test]
+fn button_array_deserialzation_test() {
+    let test_buttons = Buttons::read("assets/GUI/example_button_array.xml").unwrap();
+    println!("Simple Button Test:");
+    for button in test_buttons.buttons {
+        print!("{}", button);
+    }
+}
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Buttons {
