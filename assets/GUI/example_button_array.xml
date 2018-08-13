@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<Buttons>
+    <Button name="test" >
+        <location style="man">
+            <x>200</x>
+            <y>200</y>
+        </location>
+        <dimensions style="man">
+            <width>10</width>
+            <height>100</height>
+        </dimensions>
+        <texture file = "assets/test_button.png"/>
+        <when_pushed file = "assets/test_button_pushed.png"/> <!--Consider rearranging this configuration, style could encourage unwated recursion-->
+    </Button>
+
+    <Button name="test2" >
+        <location style="man">
+            <x>200</x>
+            <y>200</y>
+        </location>
+        <dimensions style="man">
+            <width>100</width>
+            <height>1000</height>
+        </dimensions>
+        <texture file = "assets/test_button.png"/>
+        <when_pushed file = "assets/test_button_pushed.png"/> <!--Consider rearranging this configuration, style could encourage unwated recursion-->
+    </Button>
+</Buttons>

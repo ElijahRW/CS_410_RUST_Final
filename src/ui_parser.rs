@@ -27,19 +27,20 @@ fn basic_button_deserialzation_test() {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UiButton {
-    name: String,
-    location: ButtonLocation,
-    dimensions: ButtonDimensions,
-    texture: ButtonTexture,
-    when_pushed: Option<ButtonTexture>,
+    pub name: String,
+    pub location: ButtonLocation,
+    pub dimensions: ButtonDimensions,
+    pub texture: ButtonTexture,
+    pub when_pushed: Option<ButtonTexture>,
 }
 
 
-//ToDo: Consider removing redundant structure: Use option syntax.
+//ToDo: Consider removing redundant structure: Use option syntax?
+//TODO: Implement f64 support, conversion will currently be implemented
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ButtonDimensions {
-    height: f64,
-    width: f64,
+    pub height: u64,
+    pub width: u64,
 }
 
 
@@ -60,9 +61,12 @@ pub struct ButtonTexture {
 
 //TODO: insert referenced resource URL
 
+
+
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Buttons {
-    buttons: Vec<UiButton>,
+    pub buttons: Vec<UiButton>,
 }
 
 //TODO: Implement Result Data Type instead of Option.

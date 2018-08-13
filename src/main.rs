@@ -23,6 +23,7 @@ mod piston_translator;
 mod ui_parser;
 //use ui_parser::*;
 use ui_parser::*;
+use piston_translator::*;
 
 //
 
@@ -30,14 +31,8 @@ use ui_parser::*;
 
 
 
-fn getSomeButtons(filePath: &str) -> Vec<UiButton> {
-
-    //UiButton::new
-    let mut array = Vec::new();
-
-    array.push( UiButton::read(filePath).unwrap());
-    //UiButton::read("assets/GUI/example_button.xml").unwrap()
-    array
+fn getSomeButtons(filePath: &str) -> Vec<ButtonData> {
+    ButtonData::read_buttons_from_file(filePath)
 }
 
 //EPRW: this file simply runs a hello world window using the piston engine.
@@ -63,7 +58,7 @@ fn main() {
     let factory = window.factory.clone();
     let mut glyphs = Glyphs::new(font, factory, TextureSettings::new()).unwrap();
 
-    let uiBUttons = getSomeButtons("assets/GUI/example_button.xml");
+    let uiButtons = getSomeButtons("assets/GUI/example_button_array.xml");
 
     window.set_lazy(true);
     while let Some(e) = window.next() {
@@ -83,27 +78,15 @@ fn main() {
                 // the rectangle object itself defines the color and drawing methodes, while the input array defines the dimentions.
             recy
                 .draw([25.0, 25.0, 100.0, 100.0], &draw_state, c.transform, g);
-
-
-
             Rectangle::new(BLUE)
                 .draw([50.0, 50.0, 100.0, 100.0], &draw_state, c.transform, g);
 
-            /*//let transform = c.transform.trans(100.0, 100.0);
-            // Compute clip rectangle from upper left corner.
-            let (clip_x, clip_y, clip_w, clip_h) = (100, 100, 100, 100);
-            let (clip_x, clip_y, clip_w, clip_h) =
-                (clip_x, c.viewport.unwrap().draw_size[1] - clip_y - clip_h, clip_w, clip_h);
-            let clipped = c.draw_state.scissor([clip_x, clip_y, clip_w, clip_h]);
-            Image::new().draw(&rust_logo, &clipped, transform, g);
 
-            let transform = c.transform.trans(200.0, 200.0);
-            Ellipse::new([1.0, 0.0, 0.0, 1.0])
-                .draw([0.0, 0.0, 50.0, 50.0], &DrawState::new_clip(), transform, g);
-            Image::new().draw(&rust_logo,
-                              &if clip_inside { DrawState::new_inside() }
-                                  else { DrawState::new_outside() },
-                              transform, g);*/
+            for uiButton in &uiButtons {
+                recy.draw(uiButton.dimensions, &draw_state, c.transform, g);
+            }
+
+
         });
         //Simple rectangle
 
