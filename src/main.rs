@@ -21,20 +21,11 @@ extern crate serde_derive;
 
 mod piston_translator;
 mod ui_parser;
-//use ui_parser::*;
 use piston_translator::*;
-use ui_parser::*;
 
-//
-
-fn getSomeButtons(filePath: &str) -> Vec<ButtonData> {
-    ButtonData::read_buttons_from_file(filePath)
-}
 
 //EPRW: this file simply runs a hello world window using the piston engine.
 fn main() {
-    //TODO: TEMP BUTTON Parser
-
     //TODO: Implement parsed window settings
     let mut window: PistonWindow = WindowSettings::new(
         "EPRW UI Parse Test",
@@ -53,9 +44,10 @@ fn main() {
     let factory = window.factory.clone();
     let mut glyphs = Glyphs::new(font, factory, TextureSettings::new()).unwrap();
 
-    let uiButtons = getSomeButtons("assets/GUI/example_button_array.xml");
+    let uiButtons = get_some_buttons("assets/GUI/example_button_array.xml");
 
     window.set_lazy(true);
+
     while let Some(e) = window.next() {
         const RED: [f32; 4] = [1.0, 0.0, 0.0, 1.0];
         const BLUE: [f32; 4] = [0.0, 0.0, 1.0, 0.5];
@@ -73,11 +65,13 @@ fn main() {
             // the rectangle object itself defines the color and drawing methodes, while the input array defines the dimentions.
             recy.draw([25.0, 25.0, 100.0, 100.0], &draw_state, c.transform, g);
             Rectangle::new(BLUE).draw([50.0, 50.0, 100.0, 100.0], &draw_state, c.transform, g);
-
+            //let mut current_transform;
             for ui_button in &uiButtons {
-                current_transform = c.trans(ui_button.position_x,ui_button.position_x).transform;
+                //c.trans(1000.0, 1000.0).transform;
                 //uiButton.dimensions.
-                recy.draw(ui_button.dimensions, &draw_state, c.transform, g);
+                rectangle(ui_button.color, ui_button.dimensions, c.trans(ui_button.position_x,ui_button.position_y).transform, g);
+
+                //recy.draw(ui_button.dimensions, &draw_state, c.transform, g);
             }
         });
         //Simple rectangle
@@ -85,6 +79,13 @@ fn main() {
         //looping rectangles:
         //let rectangles:Vec<piston_window::Rectangle> = Vec::new();
     }
+}
+
+
+//
+
+fn get_some_buttons(file_path: &str) -> Vec<ButtonData> {
+    ButtonData::read_buttons_from_file(file_path)
 }
 
 /* END OF COPIED SOURCES */

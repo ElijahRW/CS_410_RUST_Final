@@ -14,14 +14,14 @@ use piston_translator::piston_window::*;
 
 pub struct ButtonData {
     pub dimensions: types::Rectangle,
-    pub position_x: u64,
-    pub position_y: u64,
+    pub position_x: f64,
+    pub position_y: f64,
     pub color: [f32; 4],
 }
 
 
 #[test]
-fn test_basic_translation () {
+fn test_basic_button_translation () {
     //Todo: add manual Button Creation
     let button = UiButton::read("assets/GUI/example_button.xml");
     let x = ButtonData::new(button.unwrap());
@@ -36,14 +36,17 @@ impl ButtonData {
                 button.dimensions.width as f64,
                 button.dimensions.height as f64,
             ),
-            position_x: 50,
-            position_y: 50,
-            color: [Self::scale_for_f64(button.color.r), Self::scale_for_f64(button.color.g), Self::scale_for_f64(button.color.b), Self::scale_for_f64(button.color.a)],
+            position_x: Self::scale_for_f64(button.location.x),
+            position_y: Self::scale_for_f64(button.location.y),
+            color: [Self::scale_for_f32(button.color.r), Self::scale_for_f32(button.color.g), Self::scale_for_f32(button.color.b), Self::scale_for_f32(button.color.a)],
         }
         //result.dimensions.set();
     }
-    fn scale_for_f64(x: u64) -> f32 {
-        x as f32 / 100.0
+    fn scale_for_f32(x: u64) -> f32 {
+        (x as f32) / 100.0
+    }
+    fn scale_for_f64(x: i32) -> f64 {
+        x as f64 / 100.0
     }
 
     pub fn read_buttons_from_file(file_path: &str) -> Vec<ButtonData> {

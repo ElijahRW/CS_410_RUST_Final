@@ -43,9 +43,9 @@ pub struct ButtonDimensions {
 //ToDo: Consider removing redundant structure: Use option syntax.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ButtonLocation {
-    style: String,
-    x: i32,
-    y: i32,
+    pub style: String,
+    pub x: i32,
+    pub y: i32,
 }
 
 
