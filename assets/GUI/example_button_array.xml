@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
-    <buttons>
-        <Button name="test" >
+<buttonList>
+        <buttons name="test" >
             <location style="man">
                 <x>200</x>
                 <y>200</y>
@@ -13,5 +13,6 @@
             </dimensions>
             <texture file = "assets/test_button.png"/>
             <when_pushed file = "assets/test_button_pushed.png"/> <!--Consider rearranging this configuration, style could encourage unwated recursion-->
-        </Button>
-    </buttons>
+        </buttons>
+</buttonList>
+
