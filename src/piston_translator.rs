@@ -5,6 +5,8 @@
 extern crate find_folder;
 extern crate piston_window;
 
+
+use ui_parser::*;
 //extern crate ui_parser;
 
 use piston_translator::piston_window::draw_state::Blend;
@@ -13,31 +15,28 @@ use piston_translator::piston_window::*;
 
 
 struct RectangleData {
-    dimentions: Rectangle,
+    dimentions: types::Rectangle,
     color: [f32; 4],
 }
 
-/*fn test () {
+fn test () {
     let x = RectangleData::new();
-}*/
+}
 
 impl RectangleData {
-    /*fn new(button: UiButton) -> Self {
+    pub fn new() -> Self {
         RectangleData{
             dimentions: rectangle::rectangle_by_corners(0.0,0.0,0.0,0.0),
             //dimentions: Rectangle::new(button.color), //rectangle::rectangle_by_corners(0.0,0.0,0.0,0.0),
-            color: button.color,
+            color: [0.0,0.0,0.0,0.0],
             //rectangle::ne
         }
-    }*/
-}
+    }
 
+    pub fn readFromFile(filePath: String) -> Option<Self> {
 
-
-
-
-fn main() {
-
+        None
+    }
 }
 
 /*
