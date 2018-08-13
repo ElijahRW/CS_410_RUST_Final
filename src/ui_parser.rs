@@ -29,6 +29,7 @@ pub struct UiButton {
     pub texture: ButtonTexture,
     pub color: ButtonColor,
     pub when_pushed: Option<ButtonTexture>,
+    pub push_id: Option<String>,
 }
 
 //ToDo: Consider removing redundant structure: Use option syntax?

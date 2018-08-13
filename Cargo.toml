@@ -1,5 +1,5 @@
 [package]
-name = "CS_410_Rust_Final_Project"
+name = "cs_410_rust_final_project"
 version = "0.1.0"
 authors = ["Elijah Rich-Wimmer <elijah.rich-wimmer@act-on.net>"]
 include = ["src/**/*", "Cargo.toml"]

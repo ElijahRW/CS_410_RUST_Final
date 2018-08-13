@@ -17,6 +17,7 @@ pub struct ButtonData {
     pub position_x: f64,
     pub position_y: f64,
     pub color: [f32; 4],
+    pub push_id: Option<String>,
 }
 
 
@@ -27,6 +28,29 @@ fn test_basic_button_translation () {
     let x = ButtonData::new(button.unwrap());
 }
 
+#[test]
+fn test_cursor_triggers_inside_button() {
+    let button = create_basic_button();
+    assert_eq!(button.is_inside([11.0,11.0]), true);
+}
+
+#[test]
+fn test_cursor_triggers_outside_button() {
+    let button = create_basic_button();
+    assert_eq!(button.is_inside([0.0,0.0]), false);
+}
+#[test]
+fn test_cursor_triggers_on_position_corner() {
+    let button = create_basic_button();
+    assert_eq!(button.is_inside([10.0,10.0]), true);
+    assert_eq!(button.is_inside([12.0,12.0]), true);
+    assert_eq!(button.is_inside([10.0,12.0]), true);
+    assert_eq!(button.is_inside([12.0,10.0]), true);
+}
+
+
+
+//TODO: it will be necessary to add fluid button transitions (allowing the translator to read in multiple types of buttons
 impl ButtonData {
     pub fn new(button: UiButton) -> Self {
         ButtonData {
@@ -39,6 +63,7 @@ impl ButtonData {
             position_x: Self::scale_for_f64(button.location.x),
             position_y: Self::scale_for_f64(button.location.y),
             color: [Self::scale_for_f32(button.color.r), Self::scale_for_f32(button.color.g), Self::scale_for_f32(button.color.b), Self::scale_for_f32(button.color.a)],
+            push_id: button.push_id,
         }
         //result.dimensions.set();
     }
@@ -58,6 +83,33 @@ impl ButtonData {
             result.push(Self::new(button));
         }
         result
+    }
+
+    //TODO: This may need to be revised if we rearrange how rectangle dimensions are defined
+    pub fn is_inside(&self, [x,y]: [f64; 2]) -> bool {
+        //Is Above bottom, and below top
+        let x_test = self.position_x + self.dimensions[2];
+        let y_test = self.position_y + self.dimensions[3];
+        println!("LOCATION DEBUG: \n\tX:{},{},\n\tY:{},{}\nMouse Vars: {}, {} ", self.position_x, x_test, self.position_y, y_test, x, y);
+
+        if x >= self.position_x && (x <= (self.position_x + self.dimensions[2])) {
+            if (y >= self.position_y) && (y <= self.position_y + self.dimensions[3]) {
+                println!("BUTTON CLICKED!!!!!");
+                return true;
+            }
+        }
+        false
+    }
+}
+
+
+fn create_basic_button() -> ButtonData {
+    ButtonData {
+        dimensions: rectangle::rectangle_by_corners(0.0,0.0,2.0,2.0),
+        position_x: 10.0,
+        position_y: 10.0,
+        color: [1.0,1.0,1.0,1.0],
+        push_id: Some("basic_button".to_string()),
     }
 }
 
