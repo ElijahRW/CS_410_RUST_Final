@@ -24,6 +24,7 @@ extern crate serde_derive;
 mod piston_translator;
 mod ui_parser;
 use piston_translator::*;
+//use piston_trans
 
 fn main() {
     //TODO: Implement parsed window settings
@@ -88,13 +89,14 @@ fn main() {
             for ui_button in &ui_buttons {
                 //c.trans(1000.0, 1000.0).transform;
                 //uiButton.dimensions.
-                rectangle(
+                /*rectangle(
                     ui_button.color,
                     ui_button.dimensions,
                     c.trans(ui_button.position_x, ui_button.position_y)
                         .transform,
                     g,
-                );
+                );*/
+                ui_button.draw(c.trans(ui_button.position_x, ui_button.position_y).transform, g);
 
                 if is_pushed {
                     //println!("We have pushed the mouse!");
@@ -135,6 +137,8 @@ fn get_button_colisions(cursor_location: [f64; 2], ui_button: ButtonData) -> Opt
 
 //
 
+
+
 fn get_ui_buttons(file_path: &str) -> Vec<ButtonData> {
-    ButtonData::read_buttons_from_file(file_path)
+    ButtonData::read_from_file(file_path)
 }

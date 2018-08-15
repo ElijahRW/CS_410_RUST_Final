@@ -16,13 +16,13 @@ pub use std::path::Path;
 /**Button Struct**/
 #[test]
 fn basic_button_deserialzation_test() {
-    let test_button = UiButton::read("assets/GUI/example_button.xml").unwrap();
+    let test_button = UiButtonRaw::read("assets/GUI/example_button.xml").unwrap();
     println!("Simple Button Test:");
     print!("{}", test_button);
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct UiButton {
+pub struct UiButtonRaw {
     pub visible: Option<bool>,
     pub name: String,
     pub location: ButtonLocation,
@@ -79,7 +79,7 @@ fn button_array_deserialzation_test() {
 pub struct Buttons {
     //TODO: implement synonym for button so xml will have
     //   logical naming convention of button instead of buttons
-    pub buttons: Vec<UiButton>,
+    pub buttons: Vec<UiButtonRaw>,
 }
 
 //TODO: Implement Result Data Type instead of Option.
@@ -92,7 +92,7 @@ impl<'b, T: Deserialize<'b>> Readable for T {
         let mut file = match File::open(&path) {
             // The `description` method of `io::Error` returns a string that
             // describes the error
-            Err(why) => return None,
+            Err(_why) => return None,
             Ok(file) => file,
         };
         // Read the file contents into a string, returns `io::Result<usize>`
@@ -100,7 +100,6 @@ impl<'b, T: Deserialize<'b>> Readable for T {
         if file.read_to_string(&mut s).is_err() {
             return None;
         }
-
         Some(deserialize(s.as_bytes()).unwrap())
     }
 }
@@ -108,7 +107,7 @@ impl<'b, T: Deserialize<'b>> Readable for T {
 pub trait Readable: Sized {
     fn read(path_str: &str) -> Option<Self>;
 }
-impl fmt::Display for UiButton {
+impl fmt::Display for UiButtonRaw {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
@@ -172,8 +171,8 @@ fn create_default_buton_creation() {
     create_test_uibutton();
 }
 
-fn create_test_uibutton() -> UiButton {
-    UiButton {
+fn create_test_uibutton() -> UiButtonRaw {
+    UiButtonRaw {
         visible: Some(true),
          name: "testName".to_string(),
      location: create_test_button_location(),
