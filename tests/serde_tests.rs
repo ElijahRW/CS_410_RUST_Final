@@ -1,4 +1,3 @@
-/*
 #[macro_use]
 extern crate serde_derive;
 
@@ -19,7 +18,6 @@ struct Item {
     pub name: String,
     pub source: String,
 }
-
 
 #[derive(Debug, Deserialize)]
 struct Project {
@@ -56,5 +54,3 @@ fn serde_derefferencing_correctly_test() {
     );
     // `file` goes out of scope, and the "hello.txt" file gets closed
 }
-
-*/

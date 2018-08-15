@@ -116,6 +116,7 @@ impl fmt::Display for UiButtonRaw {
         )
     }
 }
+
 impl fmt::Display for ButtonLocation {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "(Style {}, x: {}   y: {})", self.style, self.x, self.y)
@@ -174,12 +175,14 @@ fn create_default_buton_creation() {
 fn create_test_uibutton() -> UiButtonRaw {
     UiButtonRaw {
         visible: Some(true),
-         name: "testName".to_string(),
-     location: create_test_button_location(),
-     dimensions: create_test_button_dimensions(),
-     texture: ButtonTexture{file: "testTexture.tiff".to_string()},
-     color: create_button_color(),
-     when_pushed: None,
+        name: "testName".to_string(),
+        location: create_test_button_location(),
+        dimensions: create_test_button_dimensions(),
+        texture: ButtonTexture {
+            file: "testTexture.tiff".to_string(),
+        },
+        color: create_button_color(),
+        when_pushed: None,
         push_id: Some("test_id".to_string()),
     }
 }
@@ -197,18 +200,16 @@ fn create_test_button_location() -> ButtonLocation {
     ButtonLocation {
         x: 00,
         y: 0,
-        style: "DefautlStyle".to_string()
+        style: "DefautlStyle".to_string(),
     }
 }
 
 fn create_test_button_dimensions() -> ButtonDimensions {
-    ButtonDimensions{
+    ButtonDimensions {
         height: 10,
         width: 10,
     }
 }
-
-
 
 //Value Bar Struct
 
