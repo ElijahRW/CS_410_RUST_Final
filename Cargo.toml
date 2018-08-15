@@ -1,5 +1,5 @@
 [package]
-name = "CS_410_Rust_Final_Project"
+name = "cs_410_rust_final_project"
 version = "0.1.0"
 authors = ["Elijah Rich-Wimmer <elijah.rich-wimmer@act-on.net>"]
 include = ["src/**/*", "Cargo.toml"]
@@ -21,3 +21,5 @@ serde = "1.0.70"
 serde_derive = "1.0.70"
 serde-xml-rs = "0.2.1"
 serde_json = "1.0.24"
+#conrod = "0.61.1"
+#conrod_derive = "0.1"
