@@ -5,6 +5,8 @@
 ***changed to reflect original content
 ***For original source, see:
 */
+//MOUSE DEBUG INFO: Referenced From: https://github.com/PistonDevelopers/piston-examples/blob/master/user_input/src/main.rs
+
 
 extern crate find_folder;
 extern crate piston_window;
@@ -23,14 +25,10 @@ mod piston_translator;
 mod ui_parser;
 use piston_translator::*;
 
-
-//TODO: Add
-//EPRW: this file simply runs a hello world window using the piston engine.
 fn main() {
-
     //TODO: Implement parsed window settings
     let mut window: PistonWindow = WindowSettings::new(
-        "EPRW UI Parse Test",
+        "EPRW UI Button Test",
         [500, 500]
     )
         .exit_on_esc(true)
@@ -48,87 +46,76 @@ fn main() {
     let ref font = assets.join("FiraSans-Regular.ttf");
     let factory = window.factory.clone();
     let mut glyphs = Glyphs::new(font, factory, TextureSettings::new()).unwrap();
+
     //---Custom UI Buttons
     let ui_buttons = get_ui_buttons("assets/GUI/example_button_array.xml");
-
 
     window.set_lazy(false);
 
     let mut is_pushed = false;
     //Mouse Variable
     let mut cursor = [0.0, 0.0];
-
-    let mut result: Vec<String> = Vec::new();
+    let mut buttons_clicked: Vec<String> = Vec::new();
 
     //TODO: Window args are vital for displaying buttons based on screen size.
     while let Some(e) = window.next() {
-        const RED: [f32; 4] = [1.0, 0.0, 0.0, 1.0];
-        //const BLUE: [f32; 4] = [0.0, 0.0, 1.0, 0.5];
-        //let square = rectangle::square(0.0, 0.0, 50.0);
-        //attempt to predefine the square:
-        let recy = Rectangle::new(RED);
-        //let recy2 = Rectangle::new([0.0, 1.0, 0.0, 0.0]);
 
-
-        //TODO: MOUSE DEBUG INFO: Borrowed From: https://github.com/PistonDevelopers/piston-examples/blob/master/user_input/src/main.rs
         if let Some(Button::Mouse(button)) = e.press_args() {
             //println!("We have pushed a the Mouse");
             is_pushed = true;
         }
         cursor = match e.mouse_cursor(|x, y| {
-            //println!("Mouse moved '{} {}'", x, y);
             [x, y]
         }) {
             Some(x) => x,
-            None => cursor
+            None => cursor,
         };
-        //println!("Mouse moved '{} {}'", cursor[0], cursor[1]);
-
-
 
         //The MAIN LOGIC
         window.draw_2d(&e, |c, g| {
             clear([0.8, 0.8, 0.8, 1.0], g);
             g.clear_stencil(0);
 
-
-
-
             let draw_state = c.draw_state.blend(Blend::Alpha);
 
             //TODO: EXPLANATION: Piston has a very odd method for rendering objects such as rectangles:
             // the rectangle object itself defines the color and drawing methodes, while the input array defines the dimentions.
-           //let mut current_transform;
+            //let mut current_transform;
 
             //Button ID Loop
-            result.clear();
+            buttons_clicked.clear();
 
+            for ui_button in &ui_buttons {
+                //c.trans(1000.0, 1000.0).transform;
+                //uiButton.dimensions.
+                rectangle(
+                    ui_button.color,
+                    ui_button.dimensions,
+                    c.trans(ui_button.position_x, ui_button.position_y)
+                        .transform,
+                    g,
+                );
 
-
-                for ui_button in &ui_buttons {
-                    //c.trans(1000.0, 1000.0).transform;
-                    //uiButton.dimensions.
-                    rectangle(ui_button.color, ui_button.dimensions, c.trans(ui_button.position_x,ui_button.position_y).transform, g);
-
-                    if is_pushed {
-                        //println!("We have pushed the mouse!");
-                        if ui_button.is_inside(cursor) {
-                            //println!("We have pushed the button!");
-                           match ui_button.push_id {
-                                None => {},
-                                Some(ref x) => {println!("Pushed: {}", x); result.push(x.clone());},
-                           };
-                        }
+                if is_pushed {
+                    //println!("We have pushed the mouse!");
+                    if ui_button.is_inside(cursor) {
+                        //println!("We have pushed the button!");
+                        match ui_button.push_id {
+                            None => {}
+                            Some(ref x) => {
+                                //println!("Pushed: {}", x);
+                                buttons_clicked.push(x.clone());
+                            }
+                        };
                     }
                 }
-            /*//DEBUG DISPLAY VALUES
-            for x in result {
+            }
+            //DEBUG DISPLAY VALUES
+            for x in &buttons_clicked {
                 println!("PUSHED: {}", x);
-            }*/
+            }
             is_pushed = false;
         });
-
-
 
         //END BORROWED CODE
 
@@ -139,7 +126,6 @@ fn main() {
     }
 }
 /* END OF COPIED SOURCES */
-
 
 /*//TODO: Remove it
 fn get_button_colisions(cursor_location: [f64; 2], ui_button: ButtonData) -> Option<String> {
@@ -152,13 +138,3 @@ fn get_button_colisions(cursor_location: [f64; 2], ui_button: ButtonData) -> Opt
 fn get_ui_buttons(file_path: &str) -> Vec<ButtonData> {
     ButtonData::read_buttons_from_file(file_path)
 }
-
-
-
-
-/*cursor = match e.mouse_cursor(|x, y| {
-                [x, y]
-            }) {
-                Some(x) => x,
-                None => cursor
-            };*/

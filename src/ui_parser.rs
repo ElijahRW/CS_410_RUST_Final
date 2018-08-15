@@ -23,6 +23,7 @@ fn basic_button_deserialzation_test() {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UiButton {
+    pub visible: Option<bool>,
     pub name: String,
     pub location: ButtonLocation,
     pub dimensions: ButtonDimensions,
@@ -49,16 +50,14 @@ pub struct ButtonLocation {
     pub y: i32,
 }
 
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ButtonColor {
-    //#[serde(deserialize_with = "coercible")]
+    //#[serde(deserialize_with = "coercible")]//Todo: Find correct syntax for Float values
     pub r: u64,
     pub g: u64,
     pub b: u64,
     pub a: u64,
 }
-
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ButtonTexture {
@@ -78,7 +77,7 @@ fn button_array_deserialzation_test() {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Buttons {
-    //TODO: implement sudynm for button so xml will have
+    //TODO: implement synonym for button so xml will have
     //   logical naming convention of button instead of buttons
     pub buttons: Vec<UiButton>,
 }
@@ -167,6 +166,50 @@ struct WindowColor {
     g: u32,
     b: u32,
 }
+
+#[test]
+fn create_default_buton_creation() {
+    create_test_uibutton();
+}
+
+fn create_test_uibutton() -> UiButton {
+    UiButton {
+        visible: Some(true),
+         name: "testName".to_string(),
+     location: create_test_button_location(),
+     dimensions: create_test_button_dimensions(),
+     texture: ButtonTexture{file: "testTexture.tiff".to_string()},
+     color: create_button_color(),
+     when_pushed: None,
+        push_id: Some("test_id".to_string()),
+    }
+}
+
+fn create_button_color() -> ButtonColor {
+    ButtonColor {
+        r: 0,
+        g: 0,
+        b: 0,
+        a: 0,
+    }
+}
+
+fn create_test_button_location() -> ButtonLocation {
+    ButtonLocation {
+        x: 00,
+        y: 0,
+        style: "DefautlStyle".to_string()
+    }
+}
+
+fn create_test_button_dimensions() -> ButtonDimensions {
+    ButtonDimensions{
+        height: 10,
+        width: 10,
+    }
+}
+
+
 
 //Value Bar Struct
 
