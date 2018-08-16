@@ -1,25 +1,13 @@
 //Potential Trig velocity to use: http://docs.piston.rs/mush/float/trait.Trig.html
 //Radians: http://docs.piston.rs/mush/float/trait.Radians.html
 
-//extern crate float;
-//extern crate find_folder;
 extern crate find_folder;
 extern crate piston_window;
-
-//extern crate mush;
 
 //use num_traits::Float;
 use self::piston_window::*;
 
 use std::f64;
-
-//use self::piston_window::*;
-//use self::mush::std;
-//use self::vecmath::*;
-
-//use piston_translator::*;
-
-//use self::m
 
 //#[derive(debug)]
 pub struct PongBall {
@@ -65,13 +53,13 @@ impl Velocity {
     pub fn new() -> Self {
         Velocity {
             speed: 5.0,
-            direction_deg: (186.0 as f64).to_radians(), //we'll use a
+            direction_deg: (186.0 as f64).to_radians(),
         }
     }
     pub fn rotate_direction(&mut self, angle_deg: f64) {
         self.direction_deg = (self.direction_deg + angle_deg) % (360.0 as f64).to_radians();
     }
-    pub fn flat_colision(&mut self) {
+    pub fn bounce(&mut self) {
         self.direction_deg = 0.0;
     }
 }

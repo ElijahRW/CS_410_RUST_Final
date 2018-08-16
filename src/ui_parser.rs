@@ -128,6 +128,33 @@ impl fmt::Display for ButtonTexture {
     }
 }
 
+
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct AssetPath {
+    asset : Vec<Asset>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Asset {
+    id: String,
+    path: String,
+}
+
+impl AssetPath {
+    pub fn get_path_by_id(&self, input_id: &str) -> Option<&str> {
+        for a in &self.asset {
+            //println!("")
+            if a.id.eq(input_id) {
+                return Some(&(a.path));
+            }
+        }
+        None
+    }
+}
+
+
+
 /*//TODO: Implement functionality for optional button texture in display
 impl fmt::Display for Option<ButtonTexture> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

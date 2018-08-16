@@ -26,10 +26,16 @@ mod ui_parser;
 
 //use pong_ball::*;
 use piston_translator::*;
+use ui_parser::*;
 use pong_ball::*;
 //use piston_trans
 
+
 fn main() {
+
+    let mut custom_paths = ui_parser::AssetPath::read("assets/GUI/pong_assets.xml").unwrap();
+
+
     //TODO: Implement parsed window settings
     let mut window: PistonWindow = WindowSettings::new(
         "EPRW UI Button Test",
@@ -40,7 +46,6 @@ fn main() {
         .build()
         .unwrap();
 
-    let ui_buttons = get_ui_buttons("assets/GUI/example_button_array.xml");
 
     //TODO: add custom assets path parsing.
     let assets = find_folder::Search::ParentsThenKids(3, 3)
@@ -52,7 +57,7 @@ fn main() {
     let mut glyphs = Glyphs::new(font, factory, TextureSettings::new()).unwrap();
 
     //---Custom UI Buttons
-    let mut ui_buttons = get_ui_buttons("assets/GUI/example_button_array.xml");
+    let mut ui_buttons = get_ui_buttons(custom_paths.get_path_by_id("buttons").unwrap());
     let mut the_ball = PongBall::default_new();
 
 
@@ -114,6 +119,11 @@ fn main() {
             }
             //DEBUG DISPLAY VALUES
             for x in &buttons_clicked {
+                if x.eq("refresh") {
+                    custom_paths = ui_parser::AssetPath::read("assets/GUI/pong_assets.xml").unwrap();
+                    ui_buttons = get_ui_buttons(custom_paths.get_path_by_id("buttons").unwrap());
+
+                }
                 println!("PUSHED: {}", x);
             }
             is_pushed = false;

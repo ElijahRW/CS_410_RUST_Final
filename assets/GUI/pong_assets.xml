@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<assets>
+    <asset id="obstacles" path="assets/GUI/obstacles_default.xml"/>
+    <asset id="window" path="assets/GUI/window_definition.xml"/>
+    <asset id="buttons" path="assets/GUI/example_button_array.xml"/>
+</assets>
