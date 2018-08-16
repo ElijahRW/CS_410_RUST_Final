@@ -142,6 +142,14 @@ pub struct Asset {
 }
 
 impl AssetPath {
+    pub fn new() -> Self
+    {
+        AssetPath{
+            asset: Vec::new(),
+        }
+    }
+
+
     pub fn get_path_by_id(&self, input_id: &str) -> Option<&str> {
         for a in &self.asset {
             //println!("")
