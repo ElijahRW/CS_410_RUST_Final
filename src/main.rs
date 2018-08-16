@@ -79,6 +79,19 @@ fn main() {
             None => cursor,
         };
 
+        //Keyboard Logic
+        match e.press_args() {
+            Some(Button::Keyboard(Key::Up)) => println!("Keyboard Up!!!"),
+            Some(Button::Keyboard(Key::Down)) => println!("Keyboard Down!!! Move paddle!"),
+            _ => (),
+        };
+        if let Some(Button::Keyboard(Key::R)) = e.release_args() {
+            println!("Refresh!!");
+            custom_paths = ui_parser::AssetPath::read("assets/GUI/pong_assets.xml").unwrap();
+            ui_buttons = get_ui_buttons(custom_paths.get_path_by_id("buttons").unwrap());
+        }
+
+
         //The MAIN LOGIC
         window.draw_2d(&e, |c, g| {
             clear([0.8, 0.8, 0.8, 1.0], g);
@@ -117,43 +130,27 @@ fn main() {
                     }
                 }
             }
-            //DEBUG DISPLAY VALUES
-            for x in &buttons_clicked {
-                if x.eq("refresh") {
-                    custom_paths = ui_parser::AssetPath::read("assets/GUI/pong_assets.xml").unwrap();
-                    ui_buttons = get_ui_buttons(custom_paths.get_path_by_id("buttons").unwrap());
-
-                }
-                println!("PUSHED: {}", x);
-            }
-            is_pushed = false;
         });
+        //Compiling buttons that have been clicked
+        for x in &buttons_clicked {
+            if x.eq("refresh") {
+                custom_paths = ui_parser::AssetPath::read("assets/GUI/pong_assets.xml").unwrap();
+                ui_buttons = get_ui_buttons(custom_paths.get_path_by_id("buttons").unwrap());
 
-        //END BORROWED CODE
+            }
+            //Debug Code.
+            println!("PUSHED: {}", x);
+        }
 
-        //Simple rectangle
 
-        //looping rectangles:
-        //let rectangles:Vec<piston_window::Rectangle> = Vec::new();
+
+        is_pushed = false;
+
     }
 }
-/* END OF COPIED SOURCES */
-
-/*//TODO: Remove it
-fn get_button_colisions(cursor_location: [f64; 2], ui_button: ButtonData) -> Option<String> {
-    //There won't be an equality
-    None
-}*/
 
 //
 
 fn get_ui_buttons(file_path: &str) -> Vec<ButtonData> {
-    /*let x:Vec<Box<UiObject>> = Vec::new();
-    //x.append()
-    let y = ButtonData::read_from_file(file_path);
-    for boxy in y.into_iter().map(|button|Box::new(button)) {
-        x.push(boxy);
-    }
-    x*/
     ButtonData::read_from_file(file_path)
 }

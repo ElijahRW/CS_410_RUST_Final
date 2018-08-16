@@ -1,6 +1,8 @@
 # CS 410 RUST Final
 An XML parser to generate a game GUI:
 
+##REQUEST: This project will not be ready for grading till the end of 8/16/18.
+
 
 ## Overview:
 In short, this repository is an attempt to develop a library capable of separating a game GUI from 
