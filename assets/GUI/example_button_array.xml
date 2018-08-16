@@ -20,6 +20,24 @@
             <texture file = "assets/test_button.png"/>
             <when_pushed file = "assets/test_button_pushed.png"/> <!--Consider rearranging this configuration, style could encourage unwated recursion-->
         </buttons>
+    <buttons name="test" push_id="refresh" visible="true">
+        <location style="center_screen">
+            <x>15000</x>
+            <y>10000</y>
+        </location>
+        <dimensions style="man">
+            <width>100</width>
+            <height>100</height>
+        </dimensions>
+        <color><!--Scaled From 0-100 for conversion-->
+            <r>100</r>
+            <g>10</g>
+            <b>0</b>
+            <a>50</a>
+        </color>
+        <texture file = "assets/test_button.png"/>
+        <when_pushed file = "assets/test_button_pushed.png"/> <!--Consider rearranging this configuration, style could encourage unwated recursion-->
+    </buttons>
     <buttons name="test" push_id="test" visible = "true">
         <location style="man">
             <x>100</x>
