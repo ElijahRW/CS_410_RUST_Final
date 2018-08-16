@@ -7,7 +7,6 @@
 */
 //MOUSE DEBUG INFO: Referenced From: https://github.com/PistonDevelopers/piston-examples/blob/master/user_input/src/main.rs
 
-
 extern crate find_folder;
 extern crate piston_window;
 
@@ -22,11 +21,21 @@ extern crate serde_xml_rs;
 extern crate serde_derive;
 
 mod piston_translator;
+mod pong_ball;
 mod ui_parser;
+
+//use pong_ball::*;
 use piston_translator::*;
+use ui_parser::*;
+use pong_ball::*;
 //use piston_trans
 
+
 fn main() {
+
+    let mut custom_paths = ui_parser::AssetPath::read("assets/GUI/pong_assets.xml").unwrap();
+
+
     //TODO: Implement parsed window settings
     let mut window: PistonWindow = WindowSettings::new(
         "EPRW UI Button Test",
@@ -37,7 +46,6 @@ fn main() {
         .build()
         .unwrap();
 
-    let ui_buttons = get_ui_buttons("assets/GUI/example_button_array.xml");
 
     //TODO: add custom assets path parsing.
     let assets = find_folder::Search::ParentsThenKids(3, 3)
@@ -49,7 +57,9 @@ fn main() {
     let mut glyphs = Glyphs::new(font, factory, TextureSettings::new()).unwrap();
 
     //---Custom UI Buttons
-    let ui_buttons = get_ui_buttons("assets/GUI/example_button_array.xml");
+    let mut ui_buttons = get_ui_buttons(custom_paths.get_path_by_id("buttons").unwrap());
+    let mut the_ball = PongBall::default_new();
+
 
     window.set_lazy(false);
 
@@ -60,14 +70,11 @@ fn main() {
 
     //TODO: Window args are vital for displaying buttons based on screen size.
     while let Some(e) = window.next() {
-
         if let Some(Button::Mouse(button)) = e.press_args() {
             //println!("We have pushed a the Mouse");
             is_pushed = true;
         }
-        cursor = match e.mouse_cursor(|x, y| {
-            [x, y]
-        }) {
+        cursor = match e.mouse_cursor(|x, y| [x, y]) {
             Some(x) => x,
             None => cursor,
         };
@@ -77,7 +84,7 @@ fn main() {
             clear([0.8, 0.8, 0.8, 1.0], g);
             g.clear_stencil(0);
 
-            let draw_state = c.draw_state.blend(Blend::Alpha);
+            //let draw_state = c.draw_state.blend(Blend::Alpha);//Blending Demonstration.
 
             //TODO: EXPLANATION: Piston has a very odd method for rendering objects such as rectangles:
             // the rectangle object itself defines the color and drawing methodes, while the input array defines the dimentions.
@@ -86,17 +93,15 @@ fn main() {
             //Button ID Loop
             buttons_clicked.clear();
 
+            the_ball.draw(c.trans(the_ball.x, the_ball.y).transform, g);
+            the_ball.move_ball();
+
             for ui_button in &ui_buttons {
-                //c.trans(1000.0, 1000.0).transform;
-                //uiButton.dimensions.
-                /*rectangle(
-                    ui_button.color,
-                    ui_button.dimensions,
+                ui_button.draw(
                     c.trans(ui_button.position_x, ui_button.position_y)
                         .transform,
                     g,
-                );*/
-                ui_button.draw(c.trans(ui_button.position_x, ui_button.position_y).transform, g);
+                );
 
                 if is_pushed {
                     //println!("We have pushed the mouse!");
@@ -114,6 +119,11 @@ fn main() {
             }
             //DEBUG DISPLAY VALUES
             for x in &buttons_clicked {
+                if x.eq("refresh") {
+                    custom_paths = ui_parser::AssetPath::read("assets/GUI/pong_assets.xml").unwrap();
+                    ui_buttons = get_ui_buttons(custom_paths.get_path_by_id("buttons").unwrap());
+
+                }
                 println!("PUSHED: {}", x);
             }
             is_pushed = false;
@@ -137,8 +147,13 @@ fn get_button_colisions(cursor_location: [f64; 2], ui_button: ButtonData) -> Opt
 
 //
 
-
-
 fn get_ui_buttons(file_path: &str) -> Vec<ButtonData> {
+    /*let x:Vec<Box<UiObject>> = Vec::new();
+    //x.append()
+    let y = ButtonData::read_from_file(file_path);
+    for boxy in y.into_iter().map(|button|Box::new(button)) {
+        x.push(boxy);
+    }
+    x*/
     ButtonData::read_from_file(file_path)
 }
