@@ -1,3 +1,9 @@
+/*
+--Written by Elijah Rich-Wimmer
+--Written 8/16/18
+--Cs Assignment: Introduction to Rust: CS 410 Final Project Submission
+*/
+
 extern crate piston_window;
 use self::piston_window::*;
 use piston_translator::*;
@@ -22,7 +28,7 @@ impl PaddleControls for ButtonData {
         self.position_y = self.position_y + velocity;
         self.position_y
     }
-    //Hardcoded new function
+    //Hardcoded 'new' function.
     fn new_default_paddle() -> Self {
         ButtonData {
             visible: true,

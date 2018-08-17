@@ -1,10 +1,14 @@
+/*
+--Written by Elijah Rich-Wimmer
+--Written 8/16/18
+--Cs Assignment: Introduction to Rust: CS 410 Final Project Submission
+*/
+
 //References: http://docs.piston.rs/piston_window/png/index.html
 //http://docs.piston.rs/piston_window/image/index.html
 
-//Translator Module, This file currently must be ENGINE specific. It will rely on the syntax defined
-// in parser.rs
-// This translator should hopefully be as LIGHT as possible, since our current implementation requires
-//that a translator module exists for every potential engine.
+//Translator Module, This file currently must be ENGINE specific. It will rely on the syntax defined in parser.rs
+
 extern crate find_folder;
 extern crate piston_window;
 //use self::math::{multiply, translate, Matrix2d, Vec2d, Scalar};
@@ -47,9 +51,9 @@ fn test_cursor_triggers_on_position_corner() {
     assert_eq!(button.is_inside([12.0, 10.0]), true);
 }
 
-//TODO: it will be necessary to add fluid button transitions (allowing the translator to read in multiple types of buttons
 impl UiObject for ButtonData {
-    //TODO: This may need to be revised if we rearrange how rectangle dimensions are defined
+
+    //Simple Collision Function (often Utilized to detect if a click occured within the button)
     fn is_inside(&self, [x, y]: [f64; 2]) -> bool {
         //Is Is between left and right borders
         if x >= self.position_x && (x <= (self.position_x + self.dimensions[2])) {

@@ -1,3 +1,9 @@
+/*
+--Written by Elijah Rich-Wimmer
+--Written 8/16/18
+--Cs Assignment: Introduction to Rust: CS 410 Final Project Submission
+*/
+
 extern crate find_folder;
 extern crate piston_window;
 extern crate serde;
@@ -67,7 +73,8 @@ impl Application {
                 //Button ID Loop
                 self.the_ball
                     .draw(c.trans(self.the_ball.x, self.the_ball.y).transform, g);
-                self.the_ball.move_ball();
+                //This commented function will move the ball at an angle defined.
+                //self.the_ball.move_ball();
                 self.player_paddle.draw(
                     c.trans(self.player_paddle.position_x, self.player_paddle.position_y)
                         .transform,

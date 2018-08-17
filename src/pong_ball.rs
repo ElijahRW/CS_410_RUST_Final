@@ -1,3 +1,9 @@
+/*
+--Written by Elijah Rich-Wimmer
+--Written 8/16/18
+--Cs Assignment: Introduction to Rust: CS 410 Final Project Submission
+*/
+
 //Potential Trig velocity to use: http://docs.piston.rs/mush/float/trait.Trig.html
 //Radians: http://docs.piston.rs/mush/float/trait.Radians.html
 
@@ -53,7 +59,7 @@ struct Velocity {
 impl Velocity {
     pub fn new() -> Self {
         Velocity {
-            speed: 5.0,
+            speed: 2.0,
             direction_deg: (45.0 as f64).to_radians(),
         }
     }
@@ -61,7 +67,7 @@ impl Velocity {
         self.direction_deg = (self.direction_deg + angle_deg) % (360.0 as f64).to_radians();
     }
 
-    //Todo: Stretch Goal Add riqochette functionality
+    //Todo: Stretch Goal Add rochette functionality.
     pub fn bounce(&mut self) {
         self.direction_deg = 0.0;
     }

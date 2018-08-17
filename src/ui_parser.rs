@@ -1,3 +1,9 @@
+/*
+--Written by Elijah Rich-Wimmer
+--Written 8/16/18
+--Cs Assignment: Introduction to Rust: CS 410 Final Project Submission
+*/
+
 pub use serde::de::{
     self, Deserialize, DeserializeSeed, EnumAccess, IntoDeserializer, MapAccess, SeqAccess,
     VariantAccess, Visitor,

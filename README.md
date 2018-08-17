@@ -1,15 +1,5 @@
 # CS 410 RUST Final
-An XML parser to generate a game GUI:
-
-##To view functionality
-By default, by running `cargo load` this project will load the beginnings of a
-simple pong game. Custom defined UI buttons will appear on the screen.
-
-*With the program running, by pressing the `'r'` key the program will trigger a reload.
-prompting the program to reparse the nested xml files to redraw the UI. Therefore, without
-recompiling the code, custom buttons may be adjusted and reloaded back into the window.
-
-
+An XML parser to generate a game GUI
 
 
 ## Overview: _Design Stage_
@@ -24,13 +14,28 @@ reinstantiated (Allowing for dynamic configuration).
 
 _Inspiration/Reference Using concepts from Cryengine 5: http://docs.cryengine.com/display/CEPROG/UI+Element_
 
-
 ## XML Syntax
 Currently, XML files must adhere to a standardized syntax to be properly read into the parser currently. 
 An refer to example_button.xml for a demonstration of this syntax.
 
+#To view functionality
+By default, by running `cargo load` this project will load the beginnings of a
+simple pong game. Custom defined UI buttons will appear on the screen.
 
-## Development Plan: 
+*With the program running, by pressing the `'r'` key the program will trigger a reload.
+prompting the program to reparse the nested xml files to redraw the UI. Therefore, without
+recompiling the code, custom buttons may be adjusted and reloaded back into the window.
+
+Key Features:
+* Reload XML asset files by either reloading file (no compilation needed) or pressing the `'r'` key
+* All buttons defined in `example_button_array.xml` are clickable. only id. New buttons can be defined
+ and reloaded using description outlined above. Reference example XML file for example elements.
+* Minor ui Implemented (Custom player paddle button may move up and down. Using the up and down arrow buttons)
+* Animated ball that travels at an angle (Stretch goal was to implement ricochet)
+
+
+
+# Development Plan: 
 _Outline Will be copied into the project PDF_
 ### Weeks 4-5: Research:
 * Definition of elements: (Such as)
@@ -50,6 +55,17 @@ _Outline Will be copied into the project PDF_
    * Likely Will be a simple box collecting game.
    
    
-###Development Post-mortem
+###Development Postmortem
 
-To a certain extent. I'm willing to admit that I overestimated the dificulty I would encounter in developing this project.
+To a certain extent. I'm willing to admit that I overestimated the difficulty I would encounter in developing this project.
+I encountered several issues integrating with the test engine. I admittedly sturggled to find an effective
+method of implementing
+
+In future development I would likely attempt the following:
+* Add coverage to prevent panics at parsing attempts: this would require matching at all 
+unwrap calls. Simple but requires defaults prepared.
+* Convert vector of asset path's into a Hash set for faster reference. 
+
+#Other references:
+* Code utilized to start with piston can be found under crate's example projects. 
+Current code should have little to no parallels now.
