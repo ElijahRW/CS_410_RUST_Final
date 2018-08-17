@@ -2,6 +2,7 @@
 --Written by Elijah Rich-Wimmer
 --Written 8/16/18
 --Cs Assignment: Introduction to Rust: CS 410 Final Project Submission
+--Description: This File is responsible for the example game logic. Different features (such as dynamic parsing) are demonstrated in this code).
 */
 
 extern crate find_folder;
@@ -43,11 +44,12 @@ impl Application {
     pub fn run(&mut self) {
         let mut window =
             Self::new_custom_window(self.custom_paths.get_path_by_id("window").unwrap());
-        //Reloading button assets.
+        //Reloading button assets using the parsed paths.
         self.refresh_assets_w_context(&window.size());
         let mut is_pushed = false;
         //Mouse Variable
         let mut cursor = [0.0, 0.0];
+        //vector of buttons that have been clicked (Brute force method, but simple).
         let mut buttons_clicked: Vec<String> = Vec::new();
 
         while let Some(e) = window.next() {
@@ -61,7 +63,7 @@ impl Application {
             //Keyboard Logic
             self.do_keyboard_logic(&e, &window.size());
 
-            //The Draw code
+            //The Draw code all code within this location is used to draw onto the program window
             window.draw_2d(&e, |c, g| {
                 clear([0.0, 0.0, 0.8, 1.0], g);
                 g.clear_stencil(0);
@@ -80,12 +82,14 @@ impl Application {
                         .transform,
                     g,
                 );
+                //Draw Every button that is in the ui_button vector (example of dynamically parsed UI.
                 for ui_button in &(self.ui_buttons) {
-                    ui_button.draw(
+                    ui_button.draw(//draw code
                         c.trans(ui_button.position_x, ui_button.position_y)
                             .transform,
                         g,
                     );
+                    //Button check, if we are clicking currently, then check to see if the cursor is on the current button.
                     if is_pushed {
                         if ui_button.is_inside(cursor) {
                             match ui_button.push_id {
@@ -102,22 +106,23 @@ impl Application {
                     is_pushed = false;
                 }
             });
-            //Compiling buttons that have been clicked
+            //Displaying buttons that have been clicked
             for x in &buttons_clicked {
-                if x.eq("refresh") {
+                if x.eq("refresh") {//If we manually push a button marked "refresh" then refresh the screen.
                     self.refresh_assets_w_context(&window.size());
                 }
-                //Debug Code.
+                //Debug Code. Shows which buttons we have pushed
+                //NOTE: this code supports clicking layered buttons/objects.
                 println!("PUSHED: {}", x);
             }
             buttons_clicked.clear();
         }
     }
-
+    //Pulling instantiation of window into sepperate function. Use dynamic parse to grab window dimentions
     fn new_custom_window(path: &str) -> PistonWindow {
         let window_vars = WindowData::read(path).unwrap();
         let mut wn = WindowSettings::new(
-            "EPRW UI Button Test",
+            "CS 410 Rust Final",
             [
                 window_vars.dimensions.width as u32,
                 window_vars.dimensions.height as u32,
@@ -127,6 +132,7 @@ impl Application {
         wn.build().unwrap()
     }
 
+    //Keyboard logic, this handles all user keyboard input that has been defined thus far.
     fn do_keyboard_logic(&mut self, e: &Event, size: &Size) {
         match e.press_args() {
             Some(Button::Keyboard(Key::Up)) => {
@@ -160,7 +166,7 @@ impl Application {
             self.custom_paths.get_path_by_id("buttons").unwrap(),
             size,
         );
-        //messy_ but it works to add in a custom paddle. Next step is to add in simpler functionality into piston_translator
+        //messy_ but it works to add in a custom player paddle. Next step is to add in simpler functionality into piston_translator
         self.player_paddle = ButtonData::new(
             UiButtonRaw::read(self.custom_paths.get_path_by_id("player_paddle").unwrap()).unwrap(),
         );

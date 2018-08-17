@@ -26,7 +26,7 @@ simple pong game. Custom defined UI buttons will appear on the screen.
 prompting the program to reparse the nested xml files to redraw the UI. Therefore, without
 recompiling the code, custom buttons may be adjusted and reloaded back into the window.
 
-Key Features:
+#Key Features:
 * Reload XML asset files by either reloading file (no compilation needed) or pressing the `'r'` key
 * All buttons defined in `example_button_array.xml` are clickable. only id. New buttons can be defined
  and reloaded using description outlined above. Reference example XML file for example elements.
