@@ -176,30 +176,9 @@ impl fmt::Display for Option<ButtonTexture> {
 
 //Window Config: Using Piston configuration as basis: http://docs.piston.rs/piston/window/index.html
 #[derive(Serialize, Deserialize, Debug)]
-struct Window {
-    position: Position,
-    x: i32,
-    y: i32,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Position {
-    x: i32,
-    y: i32,
-}
-
-//TODO: Consider implementing universal import for all point systems. (This might be done using a monomial syntax.)
-#[derive(Serialize, Deserialize, Debug)]
-struct Size {
-    x: u32,
-    y: u32,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct WindowColor {
-    r: u32,
-    g: u32,
-    b: u32,
+pub struct WindowData {
+    pub style: String,
+    pub dimensions: ButtonDimensions,
 }
 
 #[test]
@@ -222,6 +201,7 @@ fn create_test_uibutton() -> UiButtonRaw {
     }
 }
 
+//Testing Function
 fn create_button_color() -> ButtonColor {
     ButtonColor {
         r: 0,
@@ -231,6 +211,7 @@ fn create_button_color() -> ButtonColor {
     }
 }
 
+//Testing Function
 fn create_test_button_location() -> ButtonLocation {
     ButtonLocation {
         x: 00,
@@ -239,6 +220,7 @@ fn create_test_button_location() -> ButtonLocation {
     }
 }
 
+//Testing Function
 fn create_test_button_dimensions() -> ButtonDimensions {
     ButtonDimensions {
         height: 10,

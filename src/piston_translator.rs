@@ -51,17 +51,10 @@ fn test_cursor_triggers_on_position_corner() {
 impl UiObject for ButtonData {
     //TODO: This may need to be revised if we rearrange how rectangle dimensions are defined
     fn is_inside(&self, [x, y]: [f64; 2]) -> bool {
-        //Is Above bottom, and below top
-        let x_test = self.position_x + self.dimensions[2];
-        let y_test = self.position_y + self.dimensions[3];
-        /*println!(
-            "LOCATION DEBUG: \n\tX:{},{},\n\tY:{},{}\nMouse Vars: {}, {} ",
-            self.position_x, x_test, self.position_y, y_test, x, y
-        );*/
-
+        //Is Is between left and right borders
         if x >= self.position_x && (x <= (self.position_x + self.dimensions[2])) {
+            //Is between top and bottom borders.
             if (y >= self.position_y) && (y <= self.position_y + self.dimensions[3]) {
-                //println!("BUTTON CLICKED!!!!!");
                 return true;
             }
         }

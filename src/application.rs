@@ -42,7 +42,6 @@ impl Application {
 
     pub fn new_app_default_path() -> Self {
         Application::new("assets/GUI/pong_assets.xml")
-
     }
 
     pub fn run(& mut self) {
@@ -50,14 +49,7 @@ impl Application {
 
 
         //TODO: Implement parsed window settings
-        let mut window: PistonWindow = WindowSettings::new(
-            "EPRW UI Button Test",
-            [500, 500]
-        )
-            .exit_on_esc(true)
-            //.opengl(OpenGL::V2_1) // Set a different OpenGl version
-            .build()
-            .unwrap();
+        let mut window: PistonWindow = self.new_custom_window();
 
 
         //TODO: add custom assets path parsing.
@@ -90,14 +82,13 @@ impl Application {
                 Some(x) => x,
                 None => cursor,
             };
-            //println!("Cursor: {:?}", cursor);
 
             //Keyboard Logic
             self.do_keyboard_logic(&e);
 
             //The Draw LOGIC
             window.draw_2d(&e, |c, g| {
-                clear([0.8, 0.8, 0.8, 1.0], g);
+                clear([0.0, 0.0, 0.8, 1.0], g);
                 g.clear_stencil(0);
 
                 //let draw_state = c.draw_state.blend(Blend::Alpha);//Blending Demonstration.
@@ -115,10 +106,7 @@ impl Application {
                                         g,);
                 for ui_button in &(self.ui_buttons) {
                     ui_button.draw(
-                        c.trans(ui_button.position_x, ui_button.position_y)
-                            .transform,
-                        g,
-                    );
+                        c.trans(ui_button.position_x, ui_button.position_y).transform, g, );
                     if is_pushed {
                         if ui_button.is_inside(cursor) {
                             match ui_button.push_id {
@@ -134,7 +122,6 @@ impl Application {
                     is_pushed = false;
                 }
             });
-            //println!("Testing for pushed buttons");
             //Compiling buttons that have been clicked
             for x in &buttons_clicked {
                 if x.eq("refresh") {
@@ -148,10 +135,27 @@ impl Application {
         }
     }
 
+    fn new_custom_window(&self) -> PistonWindow {
+        let window_vars = WindowData::read(self.custom_paths.get_path_by_id("window").unwrap()).unwrap();
+        let mut wn = WindowSettings::new(
+            "EPRW UI Button Test",
+            [window_vars.dimensions.width as u32, window_vars.dimensions.height as u32]
+        )
+            .exit_on_esc(true);
+        wn.set_fullscreen(window_vars.style.eq("fullscreen"));
+       wn.build().unwrap()
+    }
+
     fn do_keyboard_logic(& mut self, e: &Event) {
         match e.press_args() {
-            Some(Button::Keyboard(Key::Up)) => {println!("Keyboard Up!!!"); self.player_paddle.move_up(10.0);},
-            Some(Button::Keyboard(Key::Down)) => {println!("Keyboard Down!!! Move paddle!"); self.player_paddle.move_down(10.0);},
+            Some(Button::Keyboard(Key::Up)) => {
+                //println!("Keyboard Up!!!");
+                self.player_paddle.move_up(10.0);
+            },
+            Some(Button::Keyboard(Key::Down)) => {
+                //println!("Keyboard Down!!! Move paddle!");
+                self.player_paddle.move_down(10.0);
+            },
             _ => {()},
         };
         if let Some(Button::Keyboard(Key::R)) = e.release_args() {

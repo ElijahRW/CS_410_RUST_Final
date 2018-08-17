@@ -15,7 +15,9 @@ pub trait PaddleControls {
 
 impl PaddleControls for ButtonData{
     fn move_up(& mut self, velocity: f64) -> f64 {
-        self.position_y = self.position_y-velocity;
+        if self.position_y > 0.0 {
+            self.position_y = self.position_y - velocity;
+        }
         self.position_y
     }
 
@@ -32,7 +34,7 @@ impl PaddleControls for ButtonData{
                 50.0,
                 200.0,
             ),
-            position_x: 150.0,
+            position_x: 20.0,
             position_y: 150.0,
             color: [0.0,1.0,0.0,1.0],
             push_id: None,
