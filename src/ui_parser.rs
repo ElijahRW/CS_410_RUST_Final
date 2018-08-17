@@ -5,7 +5,6 @@ pub use serde::de::{
 use serde_xml_rs::deserialize;
 
 pub use std::ops::{AddAssign, MulAssign, Neg};
-
 pub use std::error::Error;
 pub use std::fmt;
 pub use std::fs::File;
@@ -13,13 +12,6 @@ pub use std::io::prelude::*;
 pub use std::path::Path;
 
 //Parser Module used to grab ui variables from XML and translates them into simple structures.
-/**Button Struct**/
-#[test]
-fn basic_button_deserialzation_test() {
-    let test_button = UiButtonRaw::read("assets/GUI/example_button.xml").unwrap();
-    println!("Simple Button Test:");
-    print!("{}", test_button);
-}
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UiButtonRaw {
@@ -33,8 +25,6 @@ pub struct UiButtonRaw {
     pub push_id: Option<String>,
 }
 
-//ToDo: Consider removing redundant structure: Use option syntax?
-//TODO: Implement f64 support, conversion will currently be implemented
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ButtonDimensions {
     //#[serde(deserialize_with = "coercible")]
@@ -64,25 +54,13 @@ pub struct ButtonTexture {
     file: String,
 }
 
-//TODO: insert referenced resource URL
-
-#[test]
-fn button_array_deserialzation_test() {
-    let test_buttons = Buttons::read("assets/GUI/example_button_array.xml").unwrap();
-    println!("Simple Button Test:");
-    for button in test_buttons.buttons {
-        print!("{}", button);
-    }
-}
+//TODO: insert referenced resource
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Buttons {
-    //TODO: implement synonym for button so xml will have
-    //   logical naming convention of button instead of buttons
     pub buttons: Vec<UiButtonRaw>,
 }
 
-//TODO: Implement Result Data Type instead of Option.
 impl<'b, T: Deserialize<'b>> Readable for T {
     fn read(path_str: &str) -> Option<Self> {
         let path = Path::new(path_str);
@@ -103,10 +81,12 @@ impl<'b, T: Deserialize<'b>> Readable for T {
         Some(deserialize(s.as_bytes()).unwrap())
     }
 }
-
+//Implementing the trait
 pub trait Readable: Sized {
     fn read(path_str: &str) -> Option<Self>;
 }
+
+//Display implementations for parsed data. Used for debuging purposes.
 impl fmt::Display for UiButtonRaw {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -128,11 +108,9 @@ impl fmt::Display for ButtonTexture {
     }
 }
 
-
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct AssetPath {
-    asset : Vec<Asset>,
+    asset: Vec<Asset>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -142,14 +120,6 @@ pub struct Asset {
 }
 
 impl AssetPath {
-    pub fn new() -> Self
-    {
-        AssetPath{
-            asset: Vec::new(),
-        }
-    }
-
-
     pub fn get_path_by_id(&self, input_id: &str) -> Option<&str> {
         for a in &self.asset {
             //println!("")
@@ -161,18 +131,6 @@ impl AssetPath {
     }
 }
 
-
-
-/*//TODO: Implement functionality for optional button texture in display
-impl fmt::Display for Option<ButtonTexture> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self
-            {
-                None => write!(f, ""),
-                Some(&x) => write!(f, "{}", x)
-            }
-    }
-}*/
 
 //Window Config: Using Piston configuration as basis: http://docs.piston.rs/piston/window/index.html
 #[derive(Serialize, Deserialize, Debug)]
@@ -227,7 +185,3 @@ fn create_test_button_dimensions() -> ButtonDimensions {
         width: 10,
     }
 }
-
-//Value Bar Struct
-
-//Menu Struct?

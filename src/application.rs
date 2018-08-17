@@ -1,20 +1,14 @@
-
 extern crate find_folder;
 extern crate piston_window;
-
-//extern crate ui_parser;
 extern crate serde;
 extern crate serde_xml_rs;
 
-// piston_window::draw_state::Blend;
 use self::piston_window::*;
 //Local assets
 use piston_translator::*;
-use ui_parser::*;
 use pong_ball::*;
 use pong_paddle::*;
-
-
+use ui_parser::*;
 
 pub struct Application {
     assets_path: String,
@@ -22,23 +16,17 @@ pub struct Application {
     custom_paths: AssetPath,
     the_ball: PongBall,
     player_paddle: ButtonData,
-    //window: PistonWindow,
-    //computer_paddle: ButtonData,
 }
-
 
 impl Application {
     pub fn new(path: &str) -> Self {
         let temp_custom_paths = AssetPath::read(path).unwrap();
-        //let temp_ui_buttons = ButtonData::read_from_file_w_context(temp_custom_paths.g);
-        //let window = Self::new_custom_window(temp_custom_paths.get_path_by_id("windows").unwrap());
         Application {
             assets_path: path.to_string(),
             ui_buttons: Vec::new(),
             custom_paths: temp_custom_paths,
             the_ball: PongBall::default_new(),
             player_paddle: ButtonData::new_default_paddle(),
-            //window,
         }
     }
 
@@ -46,15 +34,11 @@ impl Application {
         Application::new("assets/GUI/pong_assets.xml")
     }
 
-    pub fn run(& mut self) {
-        let mut window = Self::new_custom_window(self.custom_paths.get_path_by_id("window").unwrap());
-
-        //self.custom_paths = AssetPath::read("assets/GUI/pong_assets.xml").unwrap();
-        //let mut window: PistonWindow = self::new_custom_window();
-
-
+    pub fn run(&mut self) {
+        let mut window =
+            Self::new_custom_window(self.custom_paths.get_path_by_id("window").unwrap());
+        //Reloading button assets.
         self.refresh_assets_w_context(&window.size());
-
         let mut is_pushed = false;
         //Mouse Variable
         let mut cursor = [0.0, 0.0];
@@ -68,31 +52,33 @@ impl Application {
                 Some(x) => x,
                 None => cursor,
             };
-
             //Keyboard Logic
             self.do_keyboard_logic(&e, &window.size());
 
-            //The Draw LOGIC
+            //The Draw code
             window.draw_2d(&e, |c, g| {
                 clear([0.0, 0.0, 0.8, 1.0], g);
                 g.clear_stencil(0);
-
                 //let draw_state = c.draw_state.blend(Blend::Alpha);//Blending Demonstration.
 
                 //EXPLANATION: Piston has an unusual for rendering objects such as rectangles:
                 // the rectangle object itself defines the color and drawing methods, while the input array defines the dimentions.
                 //let mut current_transform;
-
                 //Button ID Loop
-                self.the_ball.draw(c.trans(self.the_ball.x, self.the_ball.y).transform, g);
+                self.the_ball
+                    .draw(c.trans(self.the_ball.x, self.the_ball.y).transform, g);
                 self.the_ball.move_ball();
-
-                self.player_paddle.draw(c.trans(self.player_paddle.position_x, self.player_paddle.position_y)
-                                            .transform,
-                                        g,);
+                self.player_paddle.draw(
+                    c.trans(self.player_paddle.position_x, self.player_paddle.position_y)
+                        .transform,
+                    g,
+                );
                 for ui_button in &(self.ui_buttons) {
                     ui_button.draw(
-                        c.trans(ui_button.position_x, ui_button.position_y).transform, g, );
+                        c.trans(ui_button.position_x, ui_button.position_y)
+                            .transform,
+                        g,
+                    );
                     if is_pushed {
                         if ui_button.is_inside(cursor) {
                             match ui_button.push_id {
@@ -104,6 +90,7 @@ impl Application {
                         }
                     }
                 }
+                //Reset pushing logic
                 if is_pushed {
                     is_pushed = false;
                 }
@@ -111,13 +98,12 @@ impl Application {
             //Compiling buttons that have been clicked
             for x in &buttons_clicked {
                 if x.eq("refresh") {
-                    self.refresh_assets();
+                    self.refresh_assets_w_context(&window.size());
                 }
                 //Debug Code.
                 println!("PUSHED: {}", x);
             }
             buttons_clicked.clear();
-
         }
     }
 
@@ -125,24 +111,26 @@ impl Application {
         let window_vars = WindowData::read(path).unwrap();
         let mut wn = WindowSettings::new(
             "EPRW UI Button Test",
-            [window_vars.dimensions.width as u32, window_vars.dimensions.height as u32]
-        )
-            .exit_on_esc(true);
+            [
+                window_vars.dimensions.width as u32,
+                window_vars.dimensions.height as u32,
+            ],
+        ).exit_on_esc(true);
         wn.set_fullscreen(window_vars.style.eq("fullscreen"));
-       wn.build().unwrap()
+        wn.build().unwrap()
     }
 
-    fn do_keyboard_logic(& mut self, e: &Event, size: &Size) {
+    fn do_keyboard_logic(&mut self, e: &Event, size: &Size) {
         match e.press_args() {
             Some(Button::Keyboard(Key::Up)) => {
                 //println!("Keyboard Up!!!");
                 self.player_paddle.move_up(10.0);
-            },
+            }
             Some(Button::Keyboard(Key::Down)) => {
                 //println!("Keyboard Down!!! Move paddle!");
                 self.player_paddle.move_down(10.0);
-            },
-            _ => {()},
+            }
+            _ => (),
         };
         if let Some(Button::Keyboard(Key::R)) = e.release_args() {
             println!("Refresh!!");
@@ -150,19 +138,26 @@ impl Application {
         }
     }
 
-    fn refresh_assets(& mut self) {
+    //Function is the default refresh fun
+    fn refresh_assets(&mut self) {
         self.custom_paths = AssetPath::read(&self.assets_path).unwrap();
-        self.ui_buttons = ButtonData::read_from_file(self.custom_paths.get_path_by_id("buttons").unwrap());
+        self.ui_buttons =
+            ButtonData::read_vec_from_file(self.custom_paths.get_path_by_id("buttons").unwrap());
     }
-    fn refresh_assets_w_context(& mut self, size: &Size) {
+    //Function reloads in custom defined assets.
+    fn refresh_assets_w_context(&mut self, size: &Size) {
+        //This will reparse the asset path utilized by the running game (we an change directories mid game)
         self.custom_paths = AssetPath::read(&self.assets_path).unwrap();
-        self.ui_buttons = ButtonData::read_from_file_w_context(self.custom_paths.get_path_by_id("buttons").unwrap(), size);
-    }
 
+        self.ui_buttons = ButtonData::read_from_file_w_context(
+            self.custom_paths.get_path_by_id("buttons").unwrap(),
+            size,
+        );
+        //messy_ but it works to add in a custom paddle. Next step is to add in simpler functionality into piston_translator
+        self.player_paddle = ButtonData::new(UiButtonRaw::read(self.custom_paths.get_path_by_id("player_paddle").unwrap()).unwrap());
+    }
 
     fn get_ui_buttons(&mut self, file_path: &str) {
-        self.ui_buttons = ButtonData::read_from_file(file_path);
+        self.ui_buttons = ButtonData::read_vec_from_file(file_path);
     }
-
 }
-

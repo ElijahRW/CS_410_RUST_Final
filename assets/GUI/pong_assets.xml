@@ -5,4 +5,5 @@
     <asset id="obstacles" path="assets/GUI/obstacles_default.xml"/>
     <asset id="window" path="assets/GUI/pong_window.xml"/>
     <asset id="buttons" path="assets/GUI/example_button_array.xml"/>
+    <asset id="player_paddle" path="assets/GUI/player_paddle.xml"/>
 </assets>

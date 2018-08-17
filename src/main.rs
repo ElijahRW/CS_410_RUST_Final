@@ -1,4 +1,6 @@
 /*
+--Written by Elijah Rich-Wimmer
+--
 */
 //MOUSE DEBUG INFO: Referenced From: https://github.com/PistonDevelopers/piston-examples/blob/master/user_input/src/main.rs
 
@@ -16,13 +18,11 @@ mod ui_parser;
 mod application;
 mod pong_paddle;
 
-
 use application::Application;
 
 
+//Simple game logic is run from here
 fn main() {
     let mut game = Application::new_app_default_path();
     game.run();
 }
-
-

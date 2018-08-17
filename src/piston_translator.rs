@@ -61,7 +61,9 @@ impl UiObject for ButtonData {
         false
     }
 
-    fn draw<G>(&self, transform: math::Matrix2d, g: &mut G) where G: Graphics,
+    fn draw<G>(&self, transform: math::Matrix2d, g: &mut G)
+    where
+        G: Graphics,
     {
         /*//Inlined from
             let trans = translate([self.position_x, self.position_y]);
@@ -115,7 +117,7 @@ impl XmlButtonReadable for ButtonData {
         //create_basic_rectangle_button() //TODO: Placeholder function until Will be filled
         value
     }
-    fn read_from_file(file_path: &str) -> Vec<ButtonData> {
+    fn read_vec_from_file(file_path: &str) -> Vec<ButtonData> {
         let buttons = Buttons::read(file_path);
         let mut result = Vec::new();
         let button_vector = buttons.unwrap(); //TODO: add correct match case.
@@ -138,10 +140,9 @@ impl XmlButtonReadable for ButtonData {
 
     fn center_button(&mut self, size: &Size) {
         //let size = window.size();
-        self.position_y= (size.height as f64)/2.0;
-        self.position_x = (size.width as f64)/2.0;
+        self.position_y = (size.height as f64) / 2.0;
+        self.position_x = (size.width as f64) / 2.0;
     }
-
 
     fn left_button(&mut self, size: &Size) {
         println!("Making a left button!!!");
@@ -154,9 +155,9 @@ pub trait XmlButtonReadable: Sized {
     fn center_button(&mut self, size: &Size);
     fn new(button: UiButtonRaw) -> Self;
     fn new_with_screen_context(button: UiButtonRaw, size: &Size) -> Self;
-    fn read_from_file(file_path: &str) -> Vec<Self>;
+    fn read_vec_from_file(file_path: &str) -> Vec<Self>;
     fn read_from_file_w_context(file_path: &str, size: &Size) -> Vec<ButtonData>;
-    }
+}
 
 pub trait UiObject {
     //fn new(button: UiButtonRaw) -> Self;

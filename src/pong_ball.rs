@@ -29,15 +29,16 @@ impl PongBall {
         }
     }
 
-    pub fn draw<G>(&self, transform: math::Matrix2d, g: &mut G) where G: Graphics, {
-            Rectangle::new(self.color).draw(self.dimensions, &Default::default(), transform, g);
+    pub fn draw<G>(&self, transform: math::Matrix2d, g: &mut G)
+    where
+        G: Graphics,
+    {
+        Rectangle::new(self.color).draw(self.dimensions, &Default::default(), transform, g);
     }
 
     pub fn move_ball(&mut self) {
-        //TODO: push down cos/sin functionality to Velocity
-        self.x = self.x + self.velocity.direction_deg.sin() * self.velocity.speed; //TODO: Get sin functionality (all that's needed here)
+        self.x = self.x + self.velocity.direction_deg.sin() * self.velocity.speed;
         self.x = self.x + self.velocity.direction_deg.cos() * self.velocity.speed;
-        //println!("Ball Position: x:{}, y:{}", self.x, self.y)
     }
     pub fn rotate_direction(&mut self, angle_deg: f64) {
         self.velocity.rotate_direction(angle_deg);
@@ -46,19 +47,21 @@ impl PongBall {
 
 struct Velocity {
     speed: f64,
-    direction_deg: f64, //we will just use an angle representation for now
+    direction_deg: f64,
 }
 
 impl Velocity {
     pub fn new() -> Self {
         Velocity {
             speed: 5.0,
-            direction_deg: (186.0 as f64).to_radians(),
+            direction_deg: (45.0 as f64).to_radians(),
         }
     }
     pub fn rotate_direction(&mut self, angle_deg: f64) {
         self.direction_deg = (self.direction_deg + angle_deg) % (360.0 as f64).to_radians();
     }
+
+    //Todo: Stretch Goal Add riqochette functionality
     pub fn bounce(&mut self) {
         self.direction_deg = 0.0;
     }

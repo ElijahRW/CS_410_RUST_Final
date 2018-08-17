@@ -1,10 +1,18 @@
 # CS 410 RUST Final
 An XML parser to generate a game GUI:
 
-##REQUEST: This project will not be ready for grading till the end of 8/16/18.
+##To view functionality
+By default, by running `cargo load` this project will load the beginnings of a
+simple pong game. Custom defined UI buttons will appear on the screen.
+
+*With the program running, by pressing the `'r'` key the program will trigger a reload.
+prompting the program to reparse the nested xml files to redraw the UI. Therefore, without
+recompiling the code, custom buttons may be adjusted and reloaded back into the window.
 
 
-## Overview:
+
+
+## Overview: _Design Stage_
 In short, this repository is an attempt to develop a library capable of separating a game GUI from 
 the actual game display. In many modern game engines this is a standard approach. 
 
@@ -35,12 +43,13 @@ _Outline Will be copied into the project PDF_
   * Available Rust parsing tools _I'd honestly rather not write my own XML 
   parser with so many useful ones available
   
-
-### Week 6: Development of Parser
-
-### Week 7: Development of Translator
-
-### Week 8: Development of Example Game
+#### Week 6: Development of Parser
+#### Week 7: Development of Translator
+#### Week 8: Development of Example Game
 * Time permitting, a simple game will be developed to demonstrate the functionality of the UI system
    * Likely Will be a simple box collecting game.
-* Finishing off any incomplete elements
+   
+   
+###Development Post-mortem
+
+To a certain extent. I'm willing to admit that I overestimated the dificulty I would encounter in developing this project.
