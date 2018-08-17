@@ -11,38 +11,45 @@ extern crate serde;
 extern crate serde_xml_rs;
 
 
-//use pong_ball::*;
+//Local assets
 use piston_translator::*;
 use ui_parser::*;
 use pong_ball::*;
-//use piston_trans
+use pong_paddle::*;
 
 
 
 pub struct Application {
+    assets_path: String,
     ui_buttons: Vec<ButtonData>,
     custom_paths: AssetPath,
     the_ball: PongBall,
+    player_paddle: ButtonData,
+    //computer_paddle: ButtonData,
 }
 
 
 impl Application {
-    pub fn new() -> Self {
-        Application::new_app_default_path("assets/GUI/pong_assets.xml")
+    pub fn new(path: &str) -> Self {
+        let temp_custom_paths = AssetPath::read(path).unwrap();
+        let temp_ui_buttons = Application::get_ui_buttons(temp_custom_paths.get_path_by_id("buttons").unwrap());
+
+        Application {
+            assets_path: path.to_string(),
+            ui_buttons: temp_ui_buttons,
+            custom_paths: temp_custom_paths,
+            the_ball: PongBall::default_new(),
+            player_paddle: ButtonData::new_default_paddle(),
+        }
     }
 
-    pub fn new_app_default_path( path: &str) -> Self {
-        let mut initialized = Application {
-            ui_buttons: Vec::new(),
-            custom_paths: AssetPath::new(),
-            the_ball: PongBall::default_new(),
-        };
-        initialized.refresh_assets();
-        initialized
+    pub fn new_app_default_path() -> Self {
+        Application::new("assets/GUI/pong_assets.xml")
+
     }
 
     pub fn run(& mut self) {
-        self.custom_paths = AssetPath::read("assets/GUI/pong_assets.xml").unwrap();
+        //self.custom_paths = AssetPath::read("assets/GUI/pong_assets.xml").unwrap();
 
 
         //TODO: Implement parsed window settings
@@ -92,9 +99,9 @@ impl Application {
 
             //Keyboard Logic
             match e.press_args() {
-                Some(Button::Keyboard(Key::Up)) => println!("Keyboard Up!!!"),
-                Some(Button::Keyboard(Key::Down)) => println!("Keyboard Down!!! Move paddle!"),
-                _ => (),
+                Some(Button::Keyboard(Key::Up)) => {println!("Keyboard Up!!!"); self.player_paddle.move_up(10.0);},
+                Some(Button::Keyboard(Key::Down)) => {println!("Keyboard Down!!! Move paddle!"); self.player_paddle.move_down(10.0);},
+                _ => {()},
             };
             if let Some(Button::Keyboard(Key::R)) = e.release_args() {
                 println!("Refresh!!");
@@ -119,6 +126,9 @@ impl Application {
 
                 //println!("Button Count: {}", self.ui_buttons.len());
 
+                self.player_paddle.draw(c.trans(self.player_paddle.position_x, self.player_paddle.position_y)
+                                            .transform,
+                                        g,);
                 for ui_button in &(self.ui_buttons) {
                     ui_button.draw(
                         c.trans(ui_button.position_x, ui_button.position_y)
@@ -159,7 +169,7 @@ impl Application {
     }
 
     fn refresh_assets(& mut self) {
-        self.custom_paths = AssetPath::read("assets/GUI/pong_assets.xml").unwrap();
+        self.custom_paths = AssetPath::read(&self.assets_path).unwrap();
         self.ui_buttons = Application::get_ui_buttons(self.custom_paths.get_path_by_id("buttons").unwrap());
     }
     fn get_ui_buttons(file_path: &str) -> Vec<ButtonData> {
