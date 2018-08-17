@@ -98,9 +98,22 @@ impl XmlButtonReadable for ButtonData {
         //result.dimensions.set();
     }
 
-    //TODO: Create context Implementation.
-    fn new_with_screen_context(button: UiButtonRaw) -> Self {
-        create_basic_rectangle_button() //TODO: Placeholder function until Will be filled
+    fn new_with_screen_context(button: UiButtonRaw, size: &Size) -> Self {
+        //Todo: Create
+        let style = button.location.style.clone();
+        let mut value = Self::new(button);
+        match style.as_ref() {
+            "centered" => value.center_button(size),
+            "right" => value.left_button(size),
+            _ => (),
+        };
+        /*if button.location.style.eq("centered") || button.location.style.eq("center") {
+            value.center_button(window);
+        }
+        if button*/
+        //value.dim
+        //create_basic_rectangle_button() //TODO: Placeholder function until Will be filled
+        value
     }
     fn read_from_file(file_path: &str) -> Vec<ButtonData> {
         let buttons = Buttons::read(file_path);
@@ -112,13 +125,38 @@ impl XmlButtonReadable for ButtonData {
         }
         result
     }
+    fn read_from_file_w_context(file_path: &str, size: &Size) -> Vec<ButtonData> {
+        let buttons = Buttons::read(file_path);
+        let mut result = Vec::new();
+        let button_vector = buttons.unwrap(); //TODO: add correct match case.
+
+        for button in button_vector.buttons {
+            result.push(Self::new_with_screen_context(button, size));
+        }
+        result
+    }
+
+    fn center_button(&mut self, size: &Size) {
+        //let size = window.size();
+        self.position_y= (size.height as f64)/2.0;
+        self.position_x = (size.width as f64)/2.0;
+    }
+
+
+    fn left_button(&mut self, size: &Size) {
+        println!("Making a left button!!!");
+        self.position_x = (size.width as f64) - self.position_y;
+    }
 }
 
 pub trait XmlButtonReadable: Sized {
+    fn left_button(&mut self, size: &Size);
+    fn center_button(&mut self, size: &Size);
     fn new(button: UiButtonRaw) -> Self;
-    fn new_with_screen_context(button: UiButtonRaw) -> Self;
+    fn new_with_screen_context(button: UiButtonRaw, size: &Size) -> Self;
     fn read_from_file(file_path: &str) -> Vec<Self>;
-}
+    fn read_from_file_w_context(file_path: &str, size: &Size) -> Vec<ButtonData>;
+    }
 
 pub trait UiObject {
     //fn new(button: UiButtonRaw) -> Self;

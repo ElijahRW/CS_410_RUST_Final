@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
-<window_dimensions style="fullscreen">
+<window_dimensions style="not fullscreen">
         <dimensions>
-                <width>20</width>
-                <height>100</height>
+                <width>600</width>
+                <height>600</height>
         </dimensions>
+        <color><!--Scaled From 0-100 for conversion-->
+                <r>100</r>
+                <g>0</g>
+                <b>0</b>
+                <a>100</a>
+        </color>
 </window_dimensions>

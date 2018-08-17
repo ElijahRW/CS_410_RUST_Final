@@ -22,6 +22,7 @@ pub struct Application {
     custom_paths: AssetPath,
     the_ball: PongBall,
     player_paddle: ButtonData,
+    //window: PistonWindow,
     //computer_paddle: ButtonData,
 }
 
@@ -29,14 +30,15 @@ pub struct Application {
 impl Application {
     pub fn new(path: &str) -> Self {
         let temp_custom_paths = AssetPath::read(path).unwrap();
-        let temp_ui_buttons = Application::get_ui_buttons(temp_custom_paths.get_path_by_id("buttons").unwrap());
-
+        //let temp_ui_buttons = ButtonData::read_from_file_w_context(temp_custom_paths.g);
+        //let window = Self::new_custom_window(temp_custom_paths.get_path_by_id("windows").unwrap());
         Application {
             assets_path: path.to_string(),
-            ui_buttons: temp_ui_buttons,
+            ui_buttons: Vec::new(),
             custom_paths: temp_custom_paths,
             the_ball: PongBall::default_new(),
             player_paddle: ButtonData::new_default_paddle(),
+            //window,
         }
     }
 
@@ -45,36 +47,20 @@ impl Application {
     }
 
     pub fn run(& mut self) {
+        let mut window = Self::new_custom_window(self.custom_paths.get_path_by_id("window").unwrap());
+
         //self.custom_paths = AssetPath::read("assets/GUI/pong_assets.xml").unwrap();
+        //let mut window: PistonWindow = self::new_custom_window();
 
 
-        //TODO: Implement parsed window settings
-        let mut window: PistonWindow = self.new_custom_window();
-
-
-        //TODO: add custom assets path parsing.
-        let assets = find_folder::Search::ParentsThenKids(3, 3)
-            .for_folder("assets")
-            .unwrap();
-        println!("{:?}", assets);
-        let ref font = assets.join("FiraSans-Regular.ttf");
-        let factory = window.factory.clone();
-        let mut glyphs = Glyphs::new(font, factory, TextureSettings::new()).unwrap();
-
-        //---Custom UI Buttons
-        self.refresh_assets();
-
-
-        window.set_lazy(false);
+        self.refresh_assets_w_context(&window.size());
 
         let mut is_pushed = false;
         //Mouse Variable
         let mut cursor = [0.0, 0.0];
         let mut buttons_clicked: Vec<String> = Vec::new();
 
-        //TODO: Window args are vital for displaying buttons based on screen size.
         while let Some(e) = window.next() {
-
             if let Some(Button::Mouse(button)) = e.press_args() {
                 is_pushed = true;
             }
@@ -84,7 +70,7 @@ impl Application {
             };
 
             //Keyboard Logic
-            self.do_keyboard_logic(&e);
+            self.do_keyboard_logic(&e, &window.size());
 
             //The Draw LOGIC
             window.draw_2d(&e, |c, g| {
@@ -93,7 +79,7 @@ impl Application {
 
                 //let draw_state = c.draw_state.blend(Blend::Alpha);//Blending Demonstration.
 
-                //TODO: EXPLANATION: Piston has an unusual for rendering objects such as rectangles:
+                //EXPLANATION: Piston has an unusual for rendering objects such as rectangles:
                 // the rectangle object itself defines the color and drawing methods, while the input array defines the dimentions.
                 //let mut current_transform;
 
@@ -135,8 +121,8 @@ impl Application {
         }
     }
 
-    fn new_custom_window(&self) -> PistonWindow {
-        let window_vars = WindowData::read(self.custom_paths.get_path_by_id("window").unwrap()).unwrap();
+    fn new_custom_window(path: &str) -> PistonWindow {
+        let window_vars = WindowData::read(path).unwrap();
         let mut wn = WindowSettings::new(
             "EPRW UI Button Test",
             [window_vars.dimensions.width as u32, window_vars.dimensions.height as u32]
@@ -146,7 +132,7 @@ impl Application {
        wn.build().unwrap()
     }
 
-    fn do_keyboard_logic(& mut self, e: &Event) {
+    fn do_keyboard_logic(& mut self, e: &Event, size: &Size) {
         match e.press_args() {
             Some(Button::Keyboard(Key::Up)) => {
                 //println!("Keyboard Up!!!");
@@ -160,16 +146,22 @@ impl Application {
         };
         if let Some(Button::Keyboard(Key::R)) = e.release_args() {
             println!("Refresh!!");
-            self.refresh_assets();
+            self.refresh_assets_w_context(size);
         }
     }
 
     fn refresh_assets(& mut self) {
         self.custom_paths = AssetPath::read(&self.assets_path).unwrap();
-        self.ui_buttons = Application::get_ui_buttons(self.custom_paths.get_path_by_id("buttons").unwrap());
+        self.ui_buttons = ButtonData::read_from_file(self.custom_paths.get_path_by_id("buttons").unwrap());
     }
-    fn get_ui_buttons(file_path: &str) -> Vec<ButtonData> {
-        ButtonData::read_from_file(file_path)
+    fn refresh_assets_w_context(& mut self, size: &Size) {
+        self.custom_paths = AssetPath::read(&self.assets_path).unwrap();
+        self.ui_buttons = ButtonData::read_from_file_w_context(self.custom_paths.get_path_by_id("buttons").unwrap(), size);
+    }
+
+
+    fn get_ui_buttons(&mut self, file_path: &str) {
+        self.ui_buttons = ButtonData::read_from_file(file_path);
     }
 
 }
