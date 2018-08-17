@@ -1,7 +1,7 @@
 <buttons name="player_paddle" push_id="player_paddle" visible="true">
     <location style="none">
-        <x>100</x>
-        <y>150</y>
+        <x>1000</x>
+        <y>25000</y>
     </location>
     <dimensions style="man">
         <width>20</width>

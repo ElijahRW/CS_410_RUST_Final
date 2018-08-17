@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <buttonList>
-        <buttons name="test" push_id="TEST2" visible="true">
+        <buttons name="computer_paddle" push_id="computer_paddle" visible="true">
             <location style="right">
-                <x>10000</x>
-                <y>10000</y>
+                <x>25000</x>
+                <y>5000</y>
             </location>
             <dimensions style="man">
                 <width>20</width>
@@ -19,8 +19,8 @@
             <texture file = "assets/test_button.png"/>
             <when_pushed file = "assets/test_button_pushed.png"/> <!--Consider rearranging this configuration, style could encourage unwated recursion-->
         </buttons>
-    <buttons name="test" push_id="refresh" visible="true">
-        <location style="centered">
+    <buttons name="refresh_test" push_id="refresh" visible="true">
+        <location style="none">
             <x>0</x>
             <y>0</y>
         </location>

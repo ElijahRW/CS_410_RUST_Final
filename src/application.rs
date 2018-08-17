@@ -161,7 +161,9 @@ impl Application {
             size,
         );
         //messy_ but it works to add in a custom paddle. Next step is to add in simpler functionality into piston_translator
-        self.player_paddle = ButtonData::new(UiButtonRaw::read(self.custom_paths.get_path_by_id("player_paddle").unwrap()).unwrap());
+        self.player_paddle = ButtonData::new(
+            UiButtonRaw::read(self.custom_paths.get_path_by_id("player_paddle").unwrap()).unwrap(),
+        );
     }
 
     fn get_ui_buttons(&mut self, file_path: &str) {

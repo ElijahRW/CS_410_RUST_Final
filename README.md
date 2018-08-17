@@ -19,7 +19,7 @@ Currently, XML files must adhere to a standardized syntax to be properly read in
 An refer to example_button.xml for a demonstration of this syntax.
 
 #To view functionality
-By default, by running `cargo load` this project will load the beginnings of a
+By default, by running `cargo run` this project will load the beginnings of a
 simple pong game. Custom defined UI buttons will appear on the screen.
 
 *With the program running, by pressing the `'r'` key the program will trigger a reload.
@@ -57,9 +57,10 @@ _Outline Will be copied into the project PDF_
    
 ###Development Postmortem
 
-To a certain extent. I'm willing to admit that I overestimated the difficulty I would encounter in developing this project.
-I encountered several issues integrating with the test engine. I admittedly sturggled to find an effective
-method of implementing
+To a certain extent. I'd claim that I overestimated the difficulty I would encounter in developing this project.
+I encountered several issues integrating with the test engine. I admittedly struggled to find an effective
+method of implementing my XML system into the Piston engine. Rendering objects in their system requires full adoption of their trait heirarchy,
+ making an autonomous XML hierarchy difficult to maintain.
 
 In future development I would likely attempt the following:
 * Add coverage to prevent panics at parsing attempts: this would require matching at all 

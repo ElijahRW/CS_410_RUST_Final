@@ -6,16 +6,16 @@
 
 //Potential Trig velocity to use: http://docs.piston.rs/mush/float/trait.Trig.html
 //Radians: http://docs.piston.rs/mush/float/trait.Radians.html
-
-extern crate find_folder;
 extern crate piston_window;
-
-//use num_traits::Float;
 use self::piston_window::*;
 
 use std::f64;
 
-//#[derive(debug)]
+/*
+**Pong ball struct is a game logic data holder. It would be utilized to hold the information for a
+    pong ball's location, color, size, velocity, etc.
+**Future purpose is to implement a custom xml file aswell. Button implementation would be rather straight forware.
+*/
 pub struct PongBall {
     pub x: f64,
     pub y: f64,
@@ -35,6 +35,7 @@ impl PongBall {
         }
     }
 
+    //Function to draw pong ball in the piston engine.
     pub fn draw<G>(&self, transform: math::Matrix2d, g: &mut G)
     where
         G: Graphics,
@@ -42,7 +43,9 @@ impl PongBall {
         Rectangle::new(self.color).draw(self.dimensions, &Default::default(), transform, g);
     }
 
+    //Function called in game loop to calculate the trajectory of the pong ball
     pub fn move_ball(&mut self) {
+        //Ball moves at
         self.x = self.x + self.velocity.direction_deg.sin() * self.velocity.speed;
         self.x = self.x + self.velocity.direction_deg.cos() * self.velocity.speed;
     }
@@ -51,9 +54,11 @@ impl PongBall {
     }
 }
 
+//TODO: Implement pong ball's game logic (Currently not utilized).
+//Simple Structure used to monitor the velocity of a pong ball
 struct Velocity {
-    speed: f64,
-    direction_deg: f64,
+    pub speed: f64,
+    pub direction_deg: f64,
 }
 
 impl Velocity {
@@ -63,6 +68,7 @@ impl Velocity {
             direction_deg: (45.0 as f64).to_radians(),
         }
     }
+    //Function to maintin the pong ball
     pub fn rotate_direction(&mut self, angle_deg: f64) {
         self.direction_deg = (self.direction_deg + angle_deg) % (360.0 as f64).to_radians();
     }
@@ -71,4 +77,15 @@ impl Velocity {
     pub fn bounce(&mut self) {
         self.direction_deg = 0.0;
     }
+}
+
+#[test]
+fn rotating_360_deg_resets_angle() {
+    let mut velocity = Velocity {
+        speed: 0.0,
+        direction_deg: 1.0,
+    };
+    let mut copy = velocity.rotate_direction((360.0 as f64).to_radians());
+    assert!(velocity.direction_deg < 1.01);
+    assert!(velocity.direction_deg > 0.99);
 }

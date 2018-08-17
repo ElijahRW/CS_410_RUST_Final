@@ -1,8 +1,9 @@
 /*
 --Written by Elijah Rich-Wimmer
 --Written 8/16/18
---Cs Assignment: Introduction to Rust: CS 410 Final Project Submission
+--Cs Assignment: Introduction to Rust: CS 410 Final Project Submission.
 */
+
 extern crate find_folder;
 extern crate piston_window;
 extern crate serde;
@@ -18,7 +19,6 @@ mod application;
 mod pong_paddle;
 
 use application::Application;
-
 
 //Simple game logic is run from here
 fn main() {

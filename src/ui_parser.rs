@@ -10,11 +10,11 @@ pub use serde::de::{
 };
 use serde_xml_rs::deserialize;
 
-pub use std::ops::{AddAssign, MulAssign, Neg};
 pub use std::error::Error;
 pub use std::fmt;
 pub use std::fs::File;
 pub use std::io::prelude::*;
+pub use std::ops::{AddAssign, MulAssign, Neg};
 pub use std::path::Path;
 
 //Parser Module used to grab ui variables from XML and translates them into simple structures.
@@ -136,7 +136,6 @@ impl AssetPath {
         None
     }
 }
-
 
 //Window Config: Using Piston configuration as basis: http://docs.piston.rs/piston/window/index.html
 #[derive(Serialize, Deserialize, Debug)]

@@ -2,6 +2,8 @@
 --Written by Elijah Rich-Wimmer
 --Written 8/16/18
 --Cs Assignment: Introduction to Rust: CS 410 Final Project Submission
+--File Description: This file extends the functionality of piston_translator.rs to add game functionality to a the ButtonData structure.
+        demonstration of the universal nature of the parsing system.
 */
 
 extern crate piston_window;
