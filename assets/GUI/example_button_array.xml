@@ -3,7 +3,7 @@
 
 <buttonList>
         <buttons name="test" push_id="TEST2" visible="true">
-            <location style="man">
+            <location style="right">
                 <x>10000</x>
                 <y>10000</y>
             </location>
@@ -21,7 +21,7 @@
             <when_pushed file = "assets/test_button_pushed.png"/> <!--Consider rearranging this configuration, style could encourage unwated recursion-->
         </buttons>
     <buttons name="test" push_id="refresh" visible="true">
-        <location style="center_screen">
+        <location style="centered">
             <x>15000</x>
             <y>10000</y>
         </location>

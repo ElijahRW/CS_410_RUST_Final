@@ -2,15 +2,12 @@
 extern crate find_folder;
 extern crate piston_window;
 
-use piston_window::draw_state::Blend;
-
-use self::piston_window::*;
-
 //extern crate ui_parser;
 extern crate serde;
 extern crate serde_xml_rs;
 
-
+// piston_window::draw_state::Blend;
+use self::piston_window::*;
 //Local assets
 use piston_translator::*;
 use ui_parser::*;
@@ -87,9 +84,7 @@ impl Application {
         while let Some(e) = window.next() {
 
             if let Some(Button::Mouse(button)) = e.press_args() {
-                //println!("We have pushed a the Mouse");
                 is_pushed = true;
-                println!("PUSHED!!!!!!");
             }
             cursor = match e.mouse_cursor(|x, y| [x, y]) {
                 Some(x) => x,
@@ -98,33 +93,22 @@ impl Application {
             //println!("Cursor: {:?}", cursor);
 
             //Keyboard Logic
-            match e.press_args() {
-                Some(Button::Keyboard(Key::Up)) => {println!("Keyboard Up!!!"); self.player_paddle.move_up(10.0);},
-                Some(Button::Keyboard(Key::Down)) => {println!("Keyboard Down!!! Move paddle!"); self.player_paddle.move_down(10.0);},
-                _ => {()},
-            };
-            if let Some(Button::Keyboard(Key::R)) = e.release_args() {
-                println!("Refresh!!");
-                self.refresh_assets();
-            }
+            self.do_keyboard_logic(&e);
 
-
-            //The MAIN LOGIC
+            //The Draw LOGIC
             window.draw_2d(&e, |c, g| {
                 clear([0.8, 0.8, 0.8, 1.0], g);
                 g.clear_stencil(0);
 
                 //let draw_state = c.draw_state.blend(Blend::Alpha);//Blending Demonstration.
 
-                //TODO: EXPLANATION: Piston has a very odd method for rendering objects such as rectangles:
+                //TODO: EXPLANATION: Piston has an unusual for rendering objects such as rectangles:
                 // the rectangle object itself defines the color and drawing methods, while the input array defines the dimentions.
                 //let mut current_transform;
 
                 //Button ID Loop
                 self.the_ball.draw(c.trans(self.the_ball.x, self.the_ball.y).transform, g);
                 self.the_ball.move_ball();
-
-                //println!("Button Count: {}", self.ui_buttons.len());
 
                 self.player_paddle.draw(c.trans(self.player_paddle.position_x, self.player_paddle.position_y)
                                             .transform,
@@ -135,15 +119,11 @@ impl Application {
                             .transform,
                         g,
                     );
-                    //println!("After Drawing!! {}", is_pushed);
                     if is_pushed {
-                        //println!("We have pushed the mouse!");
                         if ui_button.is_inside(cursor) {
-                            //println!("We have pushed the button!");
                             match ui_button.push_id {
                                 None => {}
                                 Some(ref x) => {
-                                    //println!("Pushed: {}", x);
                                     buttons_clicked.push(x.clone());
                                 }
                             };
@@ -165,6 +145,18 @@ impl Application {
             }
             buttons_clicked.clear();
 
+        }
+    }
+
+    fn do_keyboard_logic(& mut self, e: &Event) {
+        match e.press_args() {
+            Some(Button::Keyboard(Key::Up)) => {println!("Keyboard Up!!!"); self.player_paddle.move_up(10.0);},
+            Some(Button::Keyboard(Key::Down)) => {println!("Keyboard Down!!! Move paddle!"); self.player_paddle.move_down(10.0);},
+            _ => {()},
+        };
+        if let Some(Button::Keyboard(Key::R)) = e.release_args() {
+            println!("Refresh!!");
+            self.refresh_assets();
         }
     }
 
